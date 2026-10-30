@@ -1,0 +1,1796 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Versión Oficial</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;0,600;1,400&family=IBM+Plex+Serif:ital,wght@0,400;0,600;1,400&family=Caveat:wght@400;600&display=swap">
+
+<style>
+/* ===== SISTEMA DE DISEÑO · monocromo institucional de alto contraste ===== */
+:root{
+  --black:#000000;
+  --ink:#0A0909;          /* superficie hundida */
+  --panel:#121111;        /* panel */
+  --panel-2:#1A1818;      /* panel elevado */
+  --line:#2E2C2B;         /* reglas */
+  --line-2:#454241;
+  --grey:#A8A4A2;         /* texto secundario */
+  --grey-dim:#7C7876;
+  --white:#FFFFFF;
+  --red:#D81E12;          /* censura · alerta · desbloqueo */
+  --red-dark:#7E100A;
+  --paper:#F2F0EA;        /* papel */
+  --paper-2:#E4E1D8;      /* prensa */
+  --paper-ink:#121110;
+
+  --mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,monospace;
+  --serif:"IBM Plex Serif",Georgia,serif;
+  --hand:"Caveat","Bradley Hand",cursive;
+
+  --gut:clamp(.9rem,3.2vw,2.4rem);
+  --col:min(1200px,100% - var(--gut)*2);
+  --r:2px;
+}
+*{box-sizing:border-box;min-width:0;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;background:var(--black);color:var(--white);
+  font-family:var(--mono);font-size:clamp(14px,.52vw + 12.4px,15.5px);
+  line-height:1.62;font-weight:300;-webkit-font-smoothing:antialiased;
+  padding:38px 0 34px;overflow-x:hidden;
+}
+body::before{
+  content:"";position:fixed;inset:0;z-index:900;pointer-events:none;
+  background:
+    repeating-linear-gradient(to bottom,rgba(0,0,0,.14) 0 1px,transparent 1px 3px),
+    radial-gradient(130% 100% at 50% 0%,transparent 48%,rgba(0,0,0,.5) 100%);
+}
+::selection{background:var(--red);color:var(--white);}
+:focus-visible{outline:2px solid var(--red);outline-offset:2px;}
+
+/* ===== CHROME ===== */
+.chrome{
+  position:fixed;left:0;right:0;z-index:910;background:#000;
+  font-size:clamp(9px,.22vw + 8.4px,10.5px);letter-spacing:.18em;text-transform:uppercase;
+  color:var(--grey-dim);display:flex;align-items:center;gap:clamp(.5rem,1.6vw,1.4rem);
+  padding:0 var(--gut);height:38px;overflow:hidden;
+}
+.chrome-top{top:0;border-bottom:1px solid var(--line);}
+.chrome-bot{bottom:0;height:34px;border-top:1px solid var(--line);padding:0;}
+.chrome b{color:var(--white);font-weight:500;}
+.chrome .sep{flex:1;}
+.chrome .hide-s{display:none;}
+@media(min-width:720px){.chrome .hide-s{display:inline;}}
+.lamp{width:7px;height:7px;background:var(--red);box-shadow:0 0 8px var(--red);flex:none;}
+.ticker{display:flex;white-space:nowrap;width:100%;}
+.ticker>span{padding:8px 0;animation:slide 72s linear infinite;flex:none;}
+.ticker>span>i{font-style:normal;padding:0 2.2rem;border-right:1px solid var(--line);}
+@keyframes slide{from{transform:translateX(0)}to{transform:translateX(-100%)}}
+.sndbtn{
+  background:none;border:1px solid var(--line-2);color:var(--grey-dim);font:inherit;
+  font-size:10px;letter-spacing:.16em;text-transform:uppercase;padding:3px 9px;cursor:pointer;
+  border-radius:var(--r);white-space:nowrap;
+}
+.sndbtn:hover{border-color:var(--red);color:var(--white);}
+.sndbtn[aria-pressed="true"]{color:var(--red);border-color:var(--red);}
+
+/* ===== ARRANQUE ===== */
+.boot{
+  position:fixed;inset:0;z-index:950;background:var(--black);
+  display:flex;flex-direction:column;justify-content:center;padding:0 var(--gut);
+  font-size:clamp(11px,.5vw + 9.5px,13px);color:var(--grey);
+}
+.boot pre{margin:0 auto;width:var(--col);white-space:pre-wrap;line-height:1.9;}
+.boot button{
+  position:absolute;right:var(--gut);bottom:40px;background:none;border:1px solid var(--line-2);
+  color:var(--grey-dim);font:inherit;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;
+  padding:7px 14px;cursor:pointer;
+}
+.boot button:hover{color:var(--white);border-color:var(--white);}
+.boot[hidden]{display:none;}
+
+/* ===== ESTRUCTURA ===== */
+main{width:var(--col);margin:0 auto;}
+section[hidden]{display:none;}
+.stack{display:flex;flex-direction:column;gap:clamp(1.3rem,2.6vw,2.4rem);}
+.band{padding:clamp(2rem,5vw,4.2rem) 0;}
+.band+.band{border-top:1px solid var(--line);}
+
+.tag{
+  font-size:clamp(9px,.2vw + 8.5px,10px);letter-spacing:.26em;text-transform:uppercase;
+  color:var(--grey-dim);display:flex;align-items:center;gap:.7rem;
+}
+.tag::after{content:"";height:1px;flex:1;background:var(--line);}
+.tag.solo::after{display:none;}
+.tag em{font-style:normal;color:var(--red);}
+
+h1,h2,h3,h4{font-weight:500;line-height:1.08;text-wrap:balance;margin:0;}
+h1{font-size:clamp(2.1rem,8vw,5rem);letter-spacing:-.035em;text-transform:uppercase;}
+h2{font-size:clamp(1.35rem,3.4vw,2.1rem);letter-spacing:-.015em;}
+h3{font-size:clamp(1rem,1.4vw,1.14rem);letter-spacing:.01em;}
+h4{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--white);font-weight:500;}
+p{margin:0;max-width:68ch;}
+.lead{color:var(--grey);font-size:clamp(.95rem,.6vw + .8rem,1.14rem);}
+.dim{color:var(--grey-dim);}
+.rule{height:1px;background:linear-gradient(to right,var(--red) 0 14%,var(--line-2) 14% 60%,transparent);}
+
+/* ===== REJILLAS FLUIDAS (se recomponen con la ventana, sin saltos) ===== */
+.grid{display:grid;gap:clamp(.8rem,1.6vw,1.3rem);}
+.g2{grid-template-columns:repeat(auto-fit,minmax(min(330px,100%),1fr));}
+.g3{grid-template-columns:repeat(auto-fit,minmax(min(260px,100%),1fr));}
+.g4{grid-template-columns:repeat(auto-fit,minmax(min(200px,100%),1fr));}
+.g-side{grid-template-columns:1fr;gap:clamp(.9rem,1.8vw,1.4rem);}
+@media(min-width:800px){.g-side{grid-template-columns:clamp(200px,20vw,264px) 1fr;align-items:start;}}
+
+/* ===== PANELES ===== */
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);display:flex;flex-direction:column;}
+.panel>header{
+  display:flex;align-items:center;gap:.8rem;padding:.6rem .95rem;background:var(--ink);
+  border-bottom:1px solid var(--line);font-size:10px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--white);flex-wrap:wrap;
+}
+.panel>header .sep{flex:1;}
+.panel>header .code{color:var(--grey-dim);letter-spacing:.1em;}
+.panel .body{padding:clamp(.9rem,1.8vw,1.4rem);display:flex;flex-direction:column;gap:1rem;}
+.panel.red-edge{box-shadow:inset 2px 0 0 var(--red);}
+
+.seal{
+  display:inline-flex;align-items:center;gap:.5rem;padding:.3rem .6rem;border:1px solid currentColor;
+  border-radius:var(--r);font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--grey-dim);
+}
+.seal.r{color:var(--red);}
+.seal.w{color:var(--white);}
+
+dl.data{display:grid;grid-template-columns:auto 1fr;gap:.35rem 1.1rem;margin:0;font-size:clamp(12px,.3vw + 11px,13.5px);}
+dl.data dt{color:var(--grey-dim);font-size:10px;letter-spacing:.14em;text-transform:uppercase;padding-top:.26rem;}
+dl.data dd{margin:0;color:var(--white);font-variant-numeric:tabular-nums;}
+@media(max-width:420px){dl.data{grid-template-columns:1fr;gap:.1rem .5rem;}dl.data dd{padding-bottom:.45rem;}}
+
+.red{
+  background:#000;color:transparent;border-radius:1px;cursor:help;padding:0 .25em;
+  box-shadow:inset 0 0 0 1px #000;transition:color .18s,background .18s;user-select:none;
+}
+.red:hover,.red:focus-visible{background:#2A0A07;color:var(--red);}
+.red.locked:hover,.red.locked:focus-visible{background:#000;color:#4A0D08;}
+
+/* ===== FORMULARIOS ===== */
+.field{display:flex;flex-direction:column;gap:.4rem;min-width:0;}
+label{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--grey-dim);}
+input[type=text],input[type=password]{
+  background:#000;border:1px solid var(--line-2);color:var(--white);font:inherit;font-size:14px;
+  letter-spacing:.1em;padding:.6rem .75rem;border-radius:var(--r);width:100%;
+}
+input:focus{border-color:var(--red);outline:none;box-shadow:0 0 0 1px var(--red);}
+.btn{
+  background:var(--panel-2);border:1px solid var(--line-2);color:var(--white);font:inherit;
+  font-size:clamp(10px,.2vw + 9.4px,11px);letter-spacing:.18em;text-transform:uppercase;
+  padding:.62rem 1.1rem;cursor:pointer;border-radius:var(--r);transition:.16s;white-space:nowrap;
+}
+.btn:hover{border-color:var(--white);}
+.btn.key{border-color:var(--red);color:#FF6A5C;}
+.btn.key:hover{background:var(--red);color:#fff;}
+.btn.big{padding:.85rem 1.6rem;font-size:11.5px;}
+.btn:disabled{opacity:.38;cursor:not-allowed;}
+.row{display:flex;flex-wrap:wrap;gap:.7rem;align-items:flex-end;}
+.row .field{flex:1 1 min(190px,100%);}
+
+.out{
+  background:#000;border:1px solid var(--line);border-left:2px solid var(--red);
+  padding:.8rem .95rem;font-size:clamp(11.5px,.25vw + 11px,12.5px);color:var(--grey);
+  min-height:3.2rem;border-radius:var(--r);white-space:pre-wrap;overflow-wrap:anywhere;
+}
+.out .ok{color:var(--white);}
+.out .no{color:var(--red);}
+
+/* ===== ÍNDICE ===== */
+.index{display:flex;flex-direction:column;gap:2px;border:1px solid var(--line);border-radius:var(--r);background:var(--ink);padding:4px;}
+.index button{
+  text-align:left;background:none;border:0;border-left:2px solid transparent;color:var(--grey);
+  font:inherit;font-size:12px;padding:.55rem .7rem;cursor:pointer;display:flex;flex-direction:column;gap:.15rem;
+}
+.index button span{font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--grey-dim);}
+.index button:hover{background:var(--panel);color:var(--white);}
+.index button[aria-selected="true"]{background:var(--panel-2);color:var(--white);border-left-color:var(--red);}
+.index button[aria-selected="true"] span{color:var(--red);}
+
+/* ===== MATERIALES ===== */
+.doc{
+  background:var(--paper);color:var(--paper-ink);padding:clamp(1rem,2.4vw,1.5rem);border-radius:var(--r);
+  font-size:clamp(12px,.3vw + 11px,13.5px);line-height:1.75;position:relative;overflow:hidden;
+}
+.doc::after{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(94deg,rgba(0,0,0,.035) 0 2px,transparent 2px 5px);}
+.doc h5{margin:0 0 .8rem;font-size:11px;letter-spacing:.24em;text-transform:uppercase;font-weight:600;}
+.doc .typed{letter-spacing:-.01em;}
+.doc .stamp{
+  position:absolute;right:-.3rem;top:1rem;transform:rotate(-7deg);border:2px solid var(--red);
+  color:var(--red);font-size:clamp(9px,.3vw + 8px,11px);letter-spacing:.22em;text-transform:uppercase;
+  padding:.3rem .7rem;font-weight:600;
+}
+.doc .bar{display:inline-block;background:#000;border-radius:1px;height:.95em;vertical-align:-.15em;max-width:100%;}
+
+.note{
+  background:var(--paper);color:var(--paper-ink);padding:clamp(1.1rem,2.6vw,1.6rem);border-radius:var(--r);position:relative;
+}
+.note::after{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(to bottom,transparent 0 1.9rem,rgba(0,0,0,.07) 1.9rem 2rem);}
+.hand{font-family:var(--hand);font-size:clamp(1.25rem,1.6vw + .9rem,1.8rem);line-height:1.45;color:#14130F;}
+.hand .strike{text-decoration:line-through;opacity:.5;}
+
+.press{background:var(--paper-2);color:var(--paper-ink);padding:clamp(1rem,2.2vw,1.3rem);border-radius:var(--r);font-family:var(--serif);}
+.press .kicker{font-family:var(--mono);font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:#56534B;}
+.press h5{font-family:var(--serif);font-size:clamp(1.1rem,1.2vw + .75rem,1.45rem);line-height:1.14;margin:.35rem 0 .6rem;font-weight:600;}
+.press .cols{columns:170px 2;column-gap:1.1rem;font-size:11.5px;line-height:1.55;text-align:justify;hyphens:auto;}
+.press .halftone{height:clamp(54px,7vw,78px);margin:.6rem 0;background-image:radial-gradient(#121110 34%,transparent 36%);background-size:4px 4px;opacity:.55;}
+
+/* ===== FOTOGRAFÍAS DE ARCHIVO (canvas) ===== */
+figure{margin:0;display:flex;flex-direction:column;gap:.45rem;min-width:0;}
+figcaption{font-size:clamp(9px,.2vw + 8.5px,10px);letter-spacing:.14em;text-transform:uppercase;color:var(--grey-dim);}
+figcaption b{color:var(--grey);font-weight:400;}
+canvas.plate{
+  width:100%;display:block;background:#000;border:1px solid var(--line);
+  border-radius:var(--r);aspect-ratio:16/10;
+}
+canvas.plate.sq{aspect-ratio:1/1;}
+canvas.plate.wide{aspect-ratio:21/9;}
+canvas.plate.tall{aspect-ratio:4/5;}
+canvas.plate.pix{image-rendering:pixelated;}
+.hero-plate{aspect-ratio:21/9;}
+@media(max-width:620px){.hero-plate{aspect-ratio:16/10;}}
+
+/* polaroid: marco en CSS, imagen en canvas */
+.pol{background:var(--paper);padding:10px 10px 0;border-radius:1px;box-shadow:0 1px 0 rgba(255,255,255,.06);display:flex;flex-direction:column;}
+.pol canvas{aspect-ratio:1/1;border:0;background:#000;width:100%;display:block;}
+.pol .cap{font-family:var(--hand);color:#1A1915;font-size:clamp(1rem,1vw + .7rem,1.22rem);line-height:1.25;padding:.55rem .1rem .7rem;display:flex;align-items:center;gap:.5rem;}
+.pol .cap .mark{background:#000;color:#000;padding:0 .5em;border-radius:1px;}
+.pol.tilt-a{transform:rotate(-.9deg);}
+.pol.tilt-b{transform:rotate(1.1deg);}
+
+/* ===== AUDIO ===== */
+.audio{display:flex;flex-direction:column;gap:.7rem;background:var(--ink);border:1px solid var(--line);padding:.9rem;border-radius:var(--r);}
+.audio .head{display:flex;align-items:center;gap:.7rem;font-size:clamp(10px,.25vw + 9.4px,11px);letter-spacing:.14em;color:var(--white);flex-wrap:wrap;}
+.audio .head .sep{flex:1;}
+.wave{display:flex;align-items:flex-end;gap:2px;height:42px;}
+.wave i{flex:1;background:var(--line-2);min-height:2px;transition:background .1s;}
+.wave i.on{background:var(--red);}
+.transcript{font-size:clamp(11.5px,.3vw + 10.8px,12.8px);color:var(--grey);line-height:1.8;}
+.transcript .gap{color:var(--red);}
+
+/* ===== CORRELADOR ===== */
+.chips{display:flex;flex-wrap:wrap;gap:.5rem;}
+.chip{
+  background:var(--ink);border:1px solid var(--line-2);color:var(--grey);font:inherit;
+  font-size:clamp(11px,.25vw + 10.4px,11.8px);padding:.45rem .7rem;cursor:pointer;border-radius:var(--r);
+  display:flex;gap:.5rem;align-items:center;text-align:left;
+}
+.chip:hover{color:var(--white);border-color:var(--grey-dim);}
+.chip[aria-pressed="true"]{border-color:var(--red);color:var(--white);background:#1C0B09;}
+.chip b{font-weight:500;color:var(--grey-dim);font-size:9.5px;letter-spacing:.12em;}
+.chip[aria-pressed="true"] b{color:var(--red);}
+.meter{display:flex;flex-direction:column;gap:.4rem;}
+.meter .track{height:6px;background:#000;border:1px solid var(--line);border-radius:2px;overflow:hidden;}
+.meter .fill{height:100%;background:var(--red);width:100%;transition:width .9s cubic-bezier(.22,1,.36,1);}
+.meter .lbl{display:flex;justify-content:space-between;gap:1rem;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--grey-dim);}
+.log{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:.5rem;font-size:clamp(11.5px,.3vw + 10.8px,12.8px);color:var(--grey);}
+.log li{border-left:2px solid var(--line);padding-left:.8rem;}
+.log li.hit{border-left-color:var(--red);color:var(--white);}
+.log li time{display:block;font-size:9.5px;letter-spacing:.16em;color:var(--grey-dim);text-transform:uppercase;}
+
+/* ===== NODOS ===== */
+.nodes{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;grid-template-columns:repeat(auto-fit,minmax(min(250px,100%),1fr));}
+.node{background:var(--panel);padding:1.1rem;display:flex;flex-direction:column;gap:.5rem;}
+.node.here{background:var(--panel-2);box-shadow:inset 2px 0 0 var(--red);}
+.node p{font-size:12.5px;color:var(--grey);}
+
+/* ===== INTRODUCCIÓN ===== */
+.intro{padding:clamp(1.4rem,4vw,3.4rem) 0 clamp(2rem,5vw,4rem);}
+.intro .meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(150px,100%),1fr));gap:1px;background:var(--line);border:1px solid var(--line);}
+.intro .meta div{background:var(--panel);padding:.8rem .9rem;display:flex;flex-direction:column;gap:.2rem;}
+.intro .meta dt{font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--grey-dim);}
+.intro .meta dd{margin:0;font-size:12.5px;color:var(--white);}
+.steps{list-style:none;margin:0;padding:0;display:grid;gap:1px;background:var(--line);border:1px solid var(--line);grid-template-columns:repeat(auto-fit,minmax(min(230px,100%),1fr));}
+.steps li{background:var(--panel);padding:1.1rem;display:flex;flex-direction:column;gap:.45rem;}
+.steps .n{font-size:10px;letter-spacing:.2em;color:var(--red);text-transform:uppercase;}
+.steps p{font-size:12.5px;color:var(--grey);}
+.steps kbd{font:inherit;font-size:12px;background:#000;border:1px solid var(--red);color:var(--white);padding:.05rem .4rem;border-radius:1px;letter-spacing:.1em;}
+.quote{
+  border-left:2px solid var(--red);padding-left:clamp(.9rem,2vw,1.4rem);
+  font-size:clamp(1.05rem,1vw + .85rem,1.5rem);line-height:1.38;color:var(--white);font-weight:300;max-width:46ch;
+}
+
+/* ===== TRANSICIÓN ===== */
+@keyframes resync{
+  0%{clip-path:inset(0 0 0 0);filter:none;transform:none;}
+  12%{filter:contrast(2.6) brightness(1.6);transform:translateX(-7px) skewX(1.2deg);}
+  26%{filter:invert(1);transform:translateX(5px);}
+  42%{filter:none;transform:translateY(3px) scaleY(1.012);}
+  60%{filter:brightness(1.3) contrast(1.6);transform:translateX(-3px);}
+  100%{filter:none;transform:none;}
+}
+.resync{animation:resync .62s steps(14,end) 1;}
+
+details.ficha{border:1px solid var(--line);border-radius:var(--r);background:var(--ink);}
+details.ficha summary{padding:.85rem 1rem;cursor:pointer;font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--grey-dim);}
+details.ficha summary:hover{color:var(--white);}
+details.ficha[open] summary{border-bottom:1px solid var(--line);color:var(--white);}
+details.ficha .body{padding:clamp(.9rem,2vw,1.3rem);display:flex;flex-direction:column;gap:1rem;font-size:12.5px;color:var(--grey);}
+details.ficha table{border-collapse:collapse;font-size:12px;width:100%;min-width:520px;}
+details.ficha th,details.ficha td{text-align:left;padding:.4rem .7rem;border-bottom:1px solid var(--line);vertical-align:top;}
+details.ficha th{color:var(--grey-dim);font-weight:500;font-size:10px;letter-spacing:.14em;text-transform:uppercase;white-space:nowrap;}
+.scrollx{overflow-x:auto;}
+footer.sig{padding:2.6rem 0 1rem;color:var(--grey-dim);font-size:11px;display:flex;flex-direction:column;gap:.5rem;}
+
+
+/* ===== CREDENCIAL DE ACCESO (entrada inmediata) ===== */
+.cred{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r);grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr));}
+.cred>div{background:var(--panel);padding:clamp(1rem,2vw,1.4rem);display:flex;flex-direction:column;gap:.9rem;}
+.cred .card{background:var(--paper);color:var(--paper-ink);border-radius:var(--r);padding:1rem 1.1rem;position:relative;overflow:hidden;}
+.cred .card::after{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(94deg,rgba(0,0,0,.04) 0 2px,transparent 2px 5px);}
+.cred .card h4{color:var(--paper-ink);margin-bottom:.7rem;}
+.cred .card dl{display:grid;grid-template-columns:auto 1fr;gap:.3rem .9rem;margin:0;font-size:clamp(11.5px,.3vw + 10.8px,13px);}
+.cred .card dt{font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:rgba(18,17,16,.6);padding-top:.25rem;}
+.cred .card dd{margin:0;font-weight:500;letter-spacing:.06em;}
+.cred .card dd b{background:#121110;color:var(--paper);padding:.05rem .45rem;border-radius:1px;font-weight:500;}
+.cred .card .mini{font-size:10px;letter-spacing:.1em;color:rgba(18,17,16,.55);text-transform:uppercase;margin-top:.8rem;}
+.cred .card .stamp{position:absolute;right:-.4rem;bottom:.8rem;transform:rotate(-8deg);border:2px solid var(--red);color:var(--red);font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;padding:.25rem .6rem;font-weight:600;}
+
+/* ===== PORTAL DE ACCESO · centrado sobre fondo desenfocado ===== */
+body.locked{overflow:hidden;}
+.gate{
+  position:fixed;inset:0;z-index:940;display:grid;place-items:center;padding:var(--gut);
+  background:rgba(0,0,0,.68);
+  -webkit-backdrop-filter:blur(16px) saturate(.5) brightness(.55);
+  backdrop-filter:blur(16px) saturate(.5) brightness(.55);
+  transition:opacity .5s ease,backdrop-filter .5s ease;
+}
+.gate[hidden]{display:none;}
+.gate.out{opacity:0;-webkit-backdrop-filter:blur(0);backdrop-filter:blur(0);pointer-events:none;}
+.gate .box{
+  width:min(460px,100%);background:var(--panel);border:1px solid var(--line-2);border-radius:var(--r);
+  box-shadow:0 0 0 1px rgba(216,30,18,.22),0 44px 110px rgba(0,0,0,.9);
+  display:flex;flex-direction:column;animation:gate-in .6s cubic-bezier(.19,1,.22,1) 1;
+}
+@keyframes gate-in{from{opacity:0;transform:scale(.94) translateY(16px);}to{opacity:1;transform:none;}}
+.gate .box>header{
+  display:flex;align-items:center;gap:.7rem;padding:.7rem 1rem;background:#000;
+  border-bottom:1px solid var(--line);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--white);
+}
+.gate .box>header .sep{flex:1;}
+.gate .box>header .dot{width:7px;height:7px;background:var(--red);box-shadow:0 0 8px var(--red);flex:none;}
+.gate .inner{padding:clamp(1.1rem,3vw,1.5rem);display:flex;flex-direction:column;gap:1rem;}
+.gate h3{font-size:clamp(1.05rem,2.4vw,1.3rem);letter-spacing:-.01em;}
+.gate p.sub{font-size:12.5px;color:var(--grey);}
+.gate .hint{
+  background:#000;border:1px solid var(--line);border-left:2px solid var(--red);padding:.7rem .85rem;
+  font-size:11.5px;color:var(--grey);display:flex;flex-direction:column;gap:.2rem;
+}
+.gate .hint b{color:var(--white);font-weight:500;letter-spacing:.08em;}
+.gate .err{font-size:11.5px;color:var(--red);min-height:1.2em;}
+.gate .foot{display:flex;flex-wrap:wrap;gap:.8rem;align-items:center;justify-content:space-between;}
+.gate .skip{background:none;border:0;color:var(--grey-dim);font:inherit;font-size:11px;letter-spacing:.06em;cursor:pointer;text-decoration:underline;text-underline-offset:3px;padding:.3rem 0;}
+.gate .skip:hover{color:var(--white);}
+
+/* ===== ZOOM AL PASAR EL CURSOR POR LOS RECUADROS ===== */
+.panel,.doc,.note,.press,.audio,.cred .card,.cred>div,.steps li,.node,.intro .meta div,.index,.chip{
+  transition:transform .42s cubic-bezier(.22,1,.36,1),box-shadow .42s ease,border-color .42s ease;
+}
+/* recuadros de sólo lectura: se amplían */
+.doc:hover,.note:hover,.press:hover,.cred .card:hover{
+  transform:scale(1.018);box-shadow:0 22px 60px rgba(0,0,0,.7);z-index:2;position:relative;
+}
+.steps li:hover,.node:hover,.intro .meta div:hover{
+  transform:scale(1.022);box-shadow:0 14px 40px rgba(0,0,0,.6),0 0 0 1px rgba(216,30,18,.35);z-index:2;position:relative;
+}
+/* paneles sin controles: también se amplían (regla aparte: usa :has) */
+.panel:hover:not(:has(input)):not(:has(button)):not(:has(.chip)){
+  transform:scale(1.014);box-shadow:0 18px 50px rgba(0,0,0,.65),0 0 0 1px rgba(216,30,18,.42);
+  border-color:var(--line-2);z-index:2;position:relative;
+}
+/* paneles operables: se iluminan sin moverse, para no desplazar el botón bajo el cursor */
+.panel:hover,.audio:hover,.index:hover{
+  box-shadow:0 18px 50px rgba(0,0,0,.6),0 0 0 1px rgba(216,30,18,.34);border-color:var(--line-2);
+}
+figure:hover figcaption{color:var(--grey);}
+@media(hover:none){
+  .panel:hover,.audio:hover,.index:hover,.doc:hover,.note:hover,.press:hover,
+  .cred .card:hover,.steps li:hover,.node:hover,.intro .meta div:hover{transform:none;box-shadow:none;}
+}
+
+/* ===== ENTRADA EN ESCENA · zoom al acercarse al recuadro ===== */
+.rv{opacity:0;transform:scale(.952) translateY(14px);transition:opacity .66s cubic-bezier(.22,1,.36,1),transform .66s cubic-bezier(.22,1,.36,1);}
+.rv.in{opacity:1;transform:none;}
+.rv.in.doc:hover,.rv.in.note:hover,.rv.in.press:hover{transform:scale(1.018);}
+.rv.in.panel:hover:not(:has(input)):not(:has(button)):not(:has(.chip)){transform:scale(1.014);}
+/* marco que recorta la lámina al ampliarse */
+.frame{overflow:hidden;border-radius:var(--r);line-height:0;position:relative;}
+.frame canvas{transition:transform .9s cubic-bezier(.22,1,.36,1),filter .9s ease;}
+figure:hover .frame canvas,figure:focus-within .frame canvas{transform:scale(1.055);}
+.frame.zoomed canvas{animation:plate-in 1.5s cubic-bezier(.19,1,.22,1) 1;}
+@keyframes plate-in{
+  from{transform:scale(1.14);filter:contrast(1.5) brightness(.6);}
+  to{transform:scale(1);filter:none;}
+}
+.pol .frame{border-radius:1px;}
+/* el panel se asienta al entrar */
+.panel.rv.in,.doc.rv.in,.note.rv.in,.press.rv.in{animation:settle .7s cubic-bezier(.22,1,.36,1) 1;}
+@keyframes settle{from{box-shadow:0 0 0 0 rgba(216,30,18,0);}40%{box-shadow:0 0 0 1px rgba(216,30,18,.5);}to{box-shadow:0 0 0 0 rgba(216,30,18,0);}}
+@media(prefers-reduced-motion:reduce){
+  .rv{opacity:1;transform:none;}
+  .frame canvas,.frame.zoomed canvas{transition:none;animation:none;}
+  figure:hover .frame canvas{transform:none;}
+  .panel.rv.in,.doc.rv.in,.note.rv.in,.press.rv.in{animation:none;}
+  .panel:hover,.audio:hover,.index:hover,.doc:hover,.note:hover,.press:hover,.cred .card:hover,
+  .steps li:hover,.node:hover,.intro .meta div:hover,.chip:hover,
+  .rv.in.doc:hover,.rv.in.note:hover,.rv.in.press:hover{transform:none;}
+  .panel:hover:not(:has(input)):not(:has(button)):not(:has(.chip)){transform:none;}
+  .gate .box{animation:none;}
+}
+
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto;}
+  .ticker>span{animation:none;}
+  .resync{animation:none;}
+  *{transition-duration:.01ms !important;}
+}
+</style>
+</head>
+<body>
+<!-- ============ ARRANQUE ============ -->
+<div class="boot" id="boot">
+  <pre id="bootlog" aria-live="polite"></pre>
+  <button type="button" id="bootskip">omitir secuencia</button>
+</div>
+
+<!-- ============ PORTAL DE ACCESO ============ -->
+<div class="gate" id="gate" role="dialog" aria-modal="true" aria-labelledby="gatetitle" hidden>
+  <div class="box">
+    <header><span class="dot"></span><span>el sistema · autenticación requerida</span><span class="sep"></span><span>terminal 03</span></header>
+    <div class="inner">
+      <h3 id="gatetitle">Acceso al archivo</h3>
+      <p class="sub">Identifíquese para consultar el Registro Nacional de Versión Oficial. La credencial habilita el volumen completo de expedientes.</p>
+      <div class="field">
+        <label for="gu">Usuario</label>
+        <input type="text" id="gu" value="TB-3-0417" spellcheck="false" autocomplete="off">
+      </div>
+      <div class="field">
+        <label for="gp">Contraseña</label>
+        <input type="password" id="gp" value="SIMON" spellcheck="false" autocomplete="off">
+      </div>
+      <p class="err" id="gerr" aria-live="polite"></p>
+      <button class="btn key big" id="gbtn" type="button">ingresar al archivo</button>
+      <div class="hint">
+        <span>Credencial provisional de consulta</span>
+        <span>usuario <b>TB-3-0417</b> · contraseña <b>SIMON</b></span>
+      </div>
+      <div class="foot">
+        <button class="skip" id="gskip" type="button">entrar sin credenciales y buscar las claves</button>
+        <span class="dim" style="font-size:10px;letter-spacing:.14em;text-transform:uppercase">acceso 09</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ CHROME ============ -->
+<header class="chrome chrome-top">
+  <span class="lamp" id="lamp"></span>
+  <b>EL SISTEMA</b>
+  <span class="dim hide-s">· división de regularización de anomalías</span>
+  <span class="sep"></span>
+  <span id="acc">acceso 00 · no autenticado</span>
+  <span class="dim hide-s" id="clk">--:--:--</span>
+  <button class="sndbtn" id="snd" aria-pressed="false" type="button">audio</button>
+</header>
+
+<main id="app" data-state="fachada">
+
+  <!-- ============ INTRODUCCIÓN ============ -->
+  <section class="intro stack">
+    <p class="tag"><em>terminal de archivo</em> · el sistema · división de regularización de anomalías</p>
+    <h1>Versión<br>Oficial</h1>
+    <div class="rule"></div>
+
+    <section class="cred" aria-label="Acceso al archivo">
+      <div>
+        <p class="tag solo"><em>acceso de funcionario</em> · entrada directa al archivo</p>
+        <div class="field">
+          <label for="u1">Usuario</label>
+          <input type="text" id="u1" value="TB-3-0417" spellcheck="false" autocomplete="off">
+        </div>
+        <div class="field">
+          <label for="p1">Contraseña</label>
+          <input type="password" id="p1" value="SIMON" spellcheck="false" autocomplete="off">
+        </div>
+        <div class="row">
+          <button class="btn key" id="loginbtn" type="button">ingresar al archivo</button>
+          <button class="btn" id="allbtn" type="button">acceso total 09</button>
+        </div>
+        <div class="out" id="loginout" aria-live="polite">Credenciales precargadas. Pulse «ingresar al archivo» para abrir los expedientes, o «acceso total 09» para desbloquear el servidor y la bóveda de una vez.</div>
+      </div>
+      <div>
+        <div class="card">
+          <span class="stamp">provisional</span>
+          <h4>Credencial de consulta</h4>
+          <dl>
+            <dt>Usuario</dt><dd><b>TB-3-0417</b></dd>
+            <dt>Clave de unidad</dt><dd><b>SIMON</b></dd>
+            <dt>Clave de bóveda</dt><dd><b>no estoy seguro</b></dd>
+            <dt>Titular</dt><dd>Blanco, Timoteo · archivista 3.ª clase</dd>
+            <dt>Vigencia</dt><dd>hasta la próxima depuración</dd>
+          </dl>
+          <p class="mini">Conserve esta credencial. El Sistema no reexpide claves.</p>
+        </div>
+        <p class="dim" style="font-size:12px">Las dos claves están impresas arriba para que pueda recorrer el archivo completo sin resolver los acertijos. Si prefiere encontrarlas usted mismo, ignore la credencial y empiece por el registro público: la primera clave está a la vista en el índice de medios adjuntos, y la segunda la escribió una víctima a mano.</p>
+      </div>
+    </section>
+
+    <div class="grid g2" style="align-items:start">
+      <div class="stack" style="gap:1.1rem">
+        <p class="quote">Lo que no consta en el archivo no ocurrió.</p>
+        <p class="lead"><b style="color:var(--white);font-weight:400">Bienvenido al archivo.</b> Esta terminal da acceso al Registro Nacional de Versión Oficial: la versión consolidada de los hechos, revisada y publicada por El Sistema. Si lo que usted recuerda no aparece aquí, el error está en el recuerdo.</p>
+        <p class="dim" style="font-size:13px">Este volumen contiene 2.140 expedientes consolidados. Nueve permanecen marcados como anomalía. Uno de ellos no se depuró a tiempo, y por eso usted todavía puede leer lo que sigue.</p>
+      </div>
+      <figure>
+        <canvas class="plate hero-plate" data-plate="deposito" aria-label="Fotografía de archivo: depósito central de expedientes"></canvas>
+        <figcaption><b>Lám. 01</b> · depósito central de expedientes · subnivel 3 · registro institucional</figcaption>
+      </figure>
+    </div>
+
+    <dl class="meta">
+      <div><dt>Expedientes consolidados</dt><dd>2.140</dd></div>
+      <div><dt>Anomalías en revisión</dt><dd>09</dd></div>
+      <div><dt>Último comunicado</dt><dd>417 · sector 7</dd></div>
+      <div><dt>Estado del registro</dt><dd>Estable</dd></div>
+      <div><dt>Su nivel de acceso</dt><dd>00 · ciudadano</dd></div>
+    </dl>
+
+    <div class="stack" style="gap:1rem">
+      <p class="tag">protocolo de consulta — cómo recorrer este archivo</p>
+      <ol class="steps">
+        <li><span class="n">01 · consulta</span><h4>Verifique un hecho</h4><p>Pregunte al registro público por el incidente del sector 7. El portal responderá siempre lo mismo. Insista: la respuesta cambia de tono, no de contenido.</p></li>
+        <li><span class="n">02 · acceso</span><h4>Encuentre la clave de unidad</h4><p>En el índice de medios adjuntos hay un archivo cuyo campo de autor nadie borró. Ese nombre abre la intranet.</p></li>
+        <li><span class="n">03 · cruce</span><h4>Correlacione las pruebas</h4><p>Dentro del servidor no listado, cruce piezas de expedientes distintos. Tres correlaciones confirmadas abren la bóveda.</p></li>
+        <li><span class="n">04 · custodia</span><h4>Libere el archivo</h4><p>La última pantalla transfiere la copia a quien esté mirando. Lo que no se difunda, se depura.</p></li>
+      </ol>
+      <div class="row" style="align-items:center;gap:1rem">
+        <a class="btn big key" href="#fachada">abrir el registro público</a>
+        <span class="dim" style="font-size:11.5px">recorrido estimado: 6 min · active el canal de audio para el ambiente de archivo</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FACHADA ============ -->
+  <section id="fachada" class="stack band">
+    <div class="stack" style="gap:1rem">
+      <p class="tag"><em>acceso público</em> · portal de estabilidad social · ley 1140 art. 7</p>
+      <h2>Registro Nacional de Versión Oficial</h2>
+      <p class="lead">Este portal publica la versión consolidada de los hechos. Toda discrepancia entre un recuerdo particular y el presente registro constituye una <strong>anomalía de percepción individual</strong> y debe reportarse a su unidad de contención más próxima.</p>
+    </div>
+
+    <div class="grid g2">
+      <article class="panel">
+        <header><span>comunicado de estabilidad social</span><span class="sep"></span><span class="code">417</span></header>
+        <div class="body">
+          <dl class="data">
+            <dt>Fecha</dt><dd>14 · 03 · <span class="red locked" tabindex="0" title="Dato suprimido permanentemente">0000</span></dd>
+            <dt>Sector</dt><dd>7 — cruce 7.ª con 12</dd>
+            <dt>Clasificación</dt><dd>incidente menor de infraestructura</dd>
+          </dl>
+          <p class="dim" style="font-size:13px">A las 03:12 se registró una interrupción programada del suministro eléctrico en el sector 7. No se reportan heridos, no se reportan víctimas, <strong style="color:var(--white)">no hubo incidente</strong>. Los relatos de un golpe metálico y un grito en la vía pública han sido evaluados y clasificados como <em>reconstrucción onírica colectiva</em>.</p>
+          <p class="seal r">documento consolidado · no admite réplica</p>
+        </div>
+      </article>
+
+      <article class="panel">
+        <header><span>consulta pública de registros</span><span class="sep"></span><span class="code">form. 09-b</span></header>
+        <div class="body">
+          <div class="row">
+            <div class="field">
+              <label for="q">Hecho que desea verificar</label>
+              <input type="text" id="q" value="golpe metálico · 7.ª con 12 · 03:12" spellcheck="false">
+            </div>
+            <button class="btn" id="qbtn" type="button">consultar</button>
+          </div>
+          <div class="out" id="qout" aria-live="polite">Esperando consulta del ciudadano.</div>
+          <p class="dim" style="font-size:11px">Sus consultas quedan registradas. Consultas efectuadas desde esta terminal: <b style="color:var(--white)" id="qn">0</b>.</p>
+        </div>
+      </article>
+    </div>
+
+    <div class="grid g2">
+      <figure>
+        <canvas class="plate" data-plate="gabinete" aria-label="Fotografía institucional: archivadores metálicos del registro"></canvas>
+        <figcaption><b>Lám. 02</b> · unidad de archivadores · sector de reclamos · una gaveta sin sellar</figcaption>
+      </figure>
+      <div class="grid" style="gap:clamp(.8rem,1.6vw,1.3rem)">
+        <article class="panel">
+          <header><span>avisos de mantenimiento</span></header>
+          <div class="body" style="gap:.7rem;font-size:12.5px;color:var(--grey)">
+            <p><b style="color:var(--white)">01 ·</b> Depuración programada de expedientes con contradicciones cognitivas. Sin impacto para el ciudadano.</p>
+            <p><b style="color:var(--white)">02 ·</b> Reemplazo de servidores de archivo en subnivel 3. Los registros migrados pueden presentar <span class="red" tabindex="0" title="pérdidas irreversibles">pérdidas tolerables</span>.</p>
+            <p><b style="color:var(--white)">03 ·</b> Falla técnica corregida en el nodo de filtraciones. Los documentos difundidos son apócrifos.</p>
+          </div>
+        </article>
+        <article class="panel red-edge">
+          <header><span>índice de medios adjuntos</span><span class="sep"></span><span class="code">dir /adj</span></header>
+          <div class="body" style="gap:.45rem;font-size:12.5px">
+            <p class="dim" style="font-size:11px">El índice se publica por obligación legal. Los archivos no son descargables.</p>
+            <p><span class="dim">—</span> ACTA_0417_CONSOLIDADA.doc</p>
+            <p><span class="dim">—</span> PRENSA_SECTOR7_CORTE.doc</p>
+            <p><span class="dim">—</span> CAM_0417_PARCIAL.vid <span class="seal r">23 min ausentes</span></p>
+            <p><span class="dim">—</span> REG_0417_<b style="color:var(--red)">SIMON</b>.wav <span class="seal r">metadato no depurado</span></p>
+            <p class="dim" style="font-size:11px;padding-top:.3rem">Anomalía 09: el campo de autor de este último archivo no corresponde a ningún funcionario activo.</p>
+          </div>
+        </article>
+      </div>
+    </div>
+
+    <article class="panel" style="max-width:560px">
+      <header><span>acceso restringido</span><span class="sep"></span><span class="code">intranet</span></header>
+      <div class="body">
+        <div class="row">
+          <div class="field">
+            <label for="idf">ID de funcionario</label>
+            <input type="text" id="idf" value="TB-3-0417" spellcheck="false">
+          </div>
+          <div class="field">
+            <label for="key">Clave de unidad</label>
+            <input type="password" id="key" spellcheck="false" autocomplete="off">
+          </div>
+        </div>
+        <button class="btn key" id="keybtn" type="button">autenticar</button>
+        <div class="out" id="keyout" aria-live="polite">Introduzca la clave de su unidad. Tres intentos fallidos generan un reporte.</div>
+      </div>
+    </article>
+  </section>
+
+  <!-- ============ SERVIDOR OCULTO ============ -->
+  <section id="oculto" class="stack band" hidden>
+    <div class="stack" style="gap:1rem">
+      <p class="tag"><em>servidor no listado</em> · subnivel 3 · sesión no registrada</p>
+      <h2>Archivo clandestino</h2>
+      <p class="lead">Estos expedientes fueron marcados para depuración y copiados antes de su borrado. La sesión no aparece en el libro de accesos. <strong style="color:var(--red)">Si el registro se purga, esto desaparece.</strong></p>
+    </div>
+
+    <div class="grid g-side">
+      <nav class="index" id="idx" aria-label="Índice de expedientes">
+        <button type="button" data-exp="e0417" aria-selected="true"><span>exp · 0417</span>José · caso piloto</button>
+        <button type="button" data-exp="e0233" aria-selected="false"><span>exp · 0233</span>Claudia R. · testigo</button>
+        <button type="button" data-exp="e0508" aria-selected="false"><span>exp · 0508</span>Administrador del edificio</button>
+        <button type="button" data-exp="diario" aria-selected="false"><span>cuaderno</span>Diario de campo</button>
+      </nav>
+      <div id="expbox" class="stack"></div>
+    </div>
+
+    <article class="panel">
+      <header><span>panel de evidencias · correlador</span><span class="sep"></span><span class="code">cruce manual</span></header>
+      <div class="body">
+        <p class="dim" style="font-size:13px">Seleccione dos piezas y ejecute el cruce. Cada correlación confirmada degrada la integridad de la versión consolidada.</p>
+        <div class="chips" id="chips"></div>
+        <div class="row" style="align-items:center">
+          <button class="btn" id="xbtn" type="button" disabled>ejecutar cruce</button>
+          <span class="dim" id="xsel" style="font-size:11.5px">0 piezas seleccionadas</span>
+        </div>
+        <div class="meter">
+          <div class="lbl"><span>integridad del registro consolidado</span><b style="color:var(--white)" id="intg">100 %</b></div>
+          <div class="track"><div class="fill" id="intgfill"></div></div>
+        </div>
+        <ul class="log" id="xlog">
+          <li><time>cruce 00</time>Sin correlaciones registradas.</li>
+        </ul>
+        <div class="field" id="finalwrap" hidden>
+          <label for="final">Clave de la bóveda — la frase con la que la víctima se rindió</label>
+          <div class="row">
+            <input type="text" id="final" spellcheck="false" autocomplete="off">
+            <button class="btn key" id="finalbtn" type="button">abrir bóveda</button>
+          </div>
+          <div class="out" id="finalout" aria-live="polite">Tres correlaciones confirmadas. La bóveda responde a una frase manuscrita del expediente 0417.</div>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <!-- ============ NÚCLEO ============ -->
+  <section id="nucleo" class="stack band" hidden>
+    <div class="stack" style="gap:1rem">
+      <p class="tag"><em>bóveda abierta</em> · expediente tb/0001 · acceso 09</p>
+      <h2>El encubridor también fue borrado</h2>
+      <p class="lead">El archivista que firmó la depuración del caso 0417 tiene expediente propio en este servidor. Es el primero de la lista de víctimas, no el último de los funcionarios.</p>
+    </div>
+
+    <div class="grid g-side">
+      <figure>
+        <canvas class="plate tall" data-plate="retrato" aria-label="Fotografía de identificación institucional anulada"></canvas>
+        <figcaption><b>Lám. 05</b> · ficha de identificación · credencial anulada</figcaption>
+      </figure>
+      <article class="panel red-edge">
+        <header><span>expediente de reestructuración</span><span class="sep"></span><span class="code">tb/0001</span></header>
+        <div class="body">
+          <dl class="data">
+            <dt>Identidad asignada</dt><dd>Timoteo Blanco</dd>
+            <dt>Cargo</dt><dd>Archivista de tercera clase</dd>
+            <dt>Antigüedad declarada</dt><dd>12 años de servicio intachable</dd>
+            <dt>Identidad previa</dt><dd style="color:var(--red)">Simón · periodista de archivo</dd>
+            <dt>Motivo de captura</dt><dd>documentación de los primeros casos de supresión de memoria</dd>
+            <dt>Resolución</dt><dd>reconfiguración neural · no ejecución</dd>
+            <dt>Marca física</dt><dd>cicatriz plana en la base del cuero cabelludo, detrás de la oreja izquierda</dd>
+            <dt>Función real</dt><dd style="color:var(--red)">encubridor de élite</dd>
+            <dt>Estado actual</dt><dd>programado para segunda depuración · <span class="red locked" tabindex="0" title="Dato suprimido permanentemente">irreversible</span></dd>
+          </dl>
+        </div>
+      </article>
+    </div>
+
+    <div class="grid g2">
+      <div class="note">
+        <p class="hand">No me reconozco la letra de los informes que firmo.<br>Hay doce años en mi expediente y ningún recuerdo dentro de ellos.<br>Si alguien lee esto: me llamaba <strong>Simón</strong>.</p>
+        <p class="tag solo" style="margin-top:.9rem">cuaderno de campo · hoja arrancada · tinta propia</p>
+      </div>
+      <figure>
+        <canvas class="plate pix" id="vidplate" aria-label="Fragmento de vídeo recuperado, degradado"></canvas>
+        <figcaption><b>Lám. 06</b> · fragmento recuperado · mesa de procedimiento · 4 fps · audio suprimido</figcaption>
+      </figure>
+    </div>
+
+    <article class="panel">
+      <header><span>transferencia de responsabilidad</span><span class="sep"></span><span class="code">salida</span></header>
+      <div class="body grid g2" style="align-items:center">
+        <div class="stack" style="gap:.9rem">
+          <h3>No puedo salvarme. Puedo sacar los archivos.</h3>
+          <p class="dim" style="font-size:13px">La copia íntegra queda encriptada y replicada en servidores abiertos. A partir de aquí la custodia no es institucional: es de quien conserve la copia. Lo que no se difunda, se depura.</p>
+          <button class="btn key big" id="rel" type="button">liberar archivo a la audiencia</button>
+          <div class="out" id="relout" aria-live="polite">Esperando orden de liberación.</div>
+        </div>
+        <figure id="qrwrap" hidden>
+          <canvas class="plate sq pix" id="qr" aria-label="Código de retorno al nodo físico"></canvas>
+          <figcaption><b>Lám. 07</b> · código impreso al reverso del informe 0417 · carpeta física</figcaption>
+        </figure>
+      </div>
+    </article>
+
+    <div class="stack">
+      <p class="tag">lo que este archivo no contiene — vacío liberado</p>
+      <div class="grid g3">
+        <div class="panel"><div class="body"><h4>procedimiento exacto</h4><p class="dim" style="font-size:12.5px">La secuencia completa de captura y borrado de la memoria original de Simón no está en este servidor.</p></div></div>
+        <div class="panel"><div class="body"><h4>expedientes íntegros</h4><p class="dim" style="font-size:12.5px">De las víctimas secundarias sólo sobreviven fragmentos. El resto fue purgado antes de la copia.</p></div></div>
+        <div class="panel"><div class="body"><h4>claves restantes</h4><p class="dim" style="font-size:12.5px">Las llaves de los respaldos profundos se reparten entre la carpeta física y las transmisiones del propio Sistema.</p></div></div>
+      </div>
+    </div>
+
+    <div class="stack">
+      <p class="tag">ecosistema transmedia · usted está en el nodo 1</p>
+      <div class="nodes">
+        <div class="node here">
+          <h4>Nodo 1 · ARG / archivo</h4>
+          <p>Esta intranet. Expedientes, audios interceptados, metadatos y contraseñas.</p>
+          <span class="seal r">activo</span>
+        </div>
+        <div class="node">
+          <h4>Nodo 2 · carpeta física</h4>
+          <p>Réplica de la carpeta de cartón: croquis, recortes, polaroids y el diario de campo. El código impreso devuelve a este servidor.</p>
+          <span class="seal">material</span>
+        </div>
+        <div class="node">
+          <h4>Nodo 3 · redes / roleplay</h4>
+          <p>El Sistema publica desmentidos y clasifica estas filtraciones como fallas técnicas. <b style="color:var(--white)">#VersionOficial</b> · <b style="color:var(--white)">#ErrorDeSistema</b></p>
+          <span class="seal">en disputa</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FICHA ============ -->
+  <details class="ficha">
+    <summary>Ficha de producción — cómo este nodo cumple la biblia transmedia</summary>
+    <div class="body">
+      <p>Pieza correspondiente al <b style="color:var(--white)">Nodo Satélite 1: Página web / Archivo clandestino (ARG)</b> del proyecto <i>Versión Oficial</i>. Estructura, tono y contenidos provienen del manual de estilo del documento integrado.</p>
+      <div class="scrollx">
+        <table>
+          <tr><th>Elemento del manual</th><th>Resolución en esta pieza</th></tr>
+          <tr><td>Fachada institucional (acceso público)</td><td>Portal de estabilidad social con comunicado 417, avisos de mantenimiento y campo obligatorio de ID de funcionario.</td></tr>
+          <tr><td>Servidor oculto (área clandestina)</td><td>Se accede con la clave <b style="color:var(--white)">SIMON</b>, obtenida del metadato no depurado de REG_0417_SIMON.wav. Al entrar, la interfaz se resincroniza.</td></tr>
+          <tr><td>Panel de evidencias</td><td>Correlador manual que cruza piezas entre expedientes; cada correlación degrada la integridad del registro consolidado.</td></tr>
+          <tr><td>Bisagra con el núcleo audiovisual</td><td>Metadatos en audio y frases de los personajes como llaves: la bóveda abre con <b style="color:var(--white)">«No estoy seguro»</b>, la frase con la que José retira su certeza.</td></tr>
+          <tr><td>Bisagra con el nodo 2 (carpeta física)</td><td>Código de retorno impreso al reverso del informe 0417, reproducido al liberar el archivo.</td></tr>
+          <tr><td>Bisagra con el nodo 3 (redes)</td><td>El aviso de mantenimiento 03 desmiente las filtraciones como «falla técnica corregida»: entrada al roleplay institucional.</td></tr>
+          <tr><td>Registro fotográfico</td><td>Siete láminas monocromas generadas por código (depósito de archivo, archivadores, polaroids del lugar, cámara de vigilancia, ficha anulada, fragmento de vídeo, código de retorno). Sin recursos externos: la página es autónoma y sellada.</td></tr>
+          <tr><td>Paleta cromática</td><td>Monocromo institucional de alto contraste: negro, blanco clínico y un único rojo <b style="color:var(--white)">#D81E12</b> reservado a censura, alertas y desbloqueos. Intensifica la base fría y desaturada que fija el manual.</td></tr>
+          <tr><td>Propuesta sonora</td><td>Zumbido de servidores, luz tubular y estática sintetizados en el navegador. Los audios interceptados sólo entregan ruido y transcripción con huecos.</td></tr>
+          <tr><td>Navegación no lineal</td><td>Índice de expedientes sin ruta única; el prosumidor decide qué carpeta abre y en qué orden cruza las pruebas.</td></tr>
+          <tr><td>Vacío liberado</td><td>Tres interrogantes declarados explícitamente ausentes del servidor, reservados a los otros nodos.</td></tr>
+        </table>
+      </div>
+      <p><b style="color:var(--white)">Principios de Jenkins aplicados.</b> Expansión y profundidad: expedientes que el núcleo sólo insinúa. Inmersión: el usuario opera la intranet en lugar de leer sobre ella. Serialidad: cada expediente deja una llave que abre otro. Subjetividad: la voz institucional del portal contra la letra manuscrita de las víctimas. Rendimiento: el cruce de pruebas y la liberación final convierten al espectador en custodio.</p>
+      <p><b style="color:var(--white)">Continuidad.</b> No se altera ningún hecho del canon. Los expedientes 0233 y 0508 son material nuevo de profundización sobre víctimas secundarias, permitido por el límite narrativo del documento. <i>Alerta registrada:</i> el perfil de personajes titula al Detective «Félix Blanco» mientras el cuerpo del texto, la arquitectura y el canon fijan <b style="color:var(--white)">Timoteo Blanco</b>; aquí se usa Timoteo Blanco.</p>
+    </div>
+  </details>
+
+  <footer class="sig">
+    <span>VERSIÓN OFICIAL · proyecto transmedia · nodo satélite 1</span>
+    <span>Samir Díaz · Thomas Alarcón — Dirección y Producción de Medios Audiovisuales</span>
+    <span>CUN · Narraciones Transmediales · Grupo 20101 · Docente: Santiago Andrés Infante Rodríguez</span>
+  </footer>
+</main>
+
+<div class="chrome chrome-bot">
+  <div class="ticker" aria-hidden="true"><span id="tk1"></span><span id="tk2"></span></div>
+</div>
+
+<script>
+"use strict";
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const RM=matchMedia("(prefers-reduced-motion: reduce)").matches;
+const app=$("#app");
+
+/* ======================================================================
+   LÁMINAS · fotografía de archivo generada por código
+   ====================================================================== */
+function seeded(seed){ let s=seed>>>0; return ()=>((s=(s*1664525+1013904223)>>>0)/4294967296); }
+
+function grain(x,W,H,amt=26,seed=7){
+  const im=x.getImageData(0,0,x.canvas.width,x.canvas.height), d=im.data, r=seeded(seed);
+  for(let i=0;i<d.length;i+=4){ const n=(r()-.5)*amt; d[i]+=n; d[i+1]+=n; d[i+2]+=n; }
+  x.putImageData(im,0,0);
+}
+function vign(x,W,H,s=.78){
+  const g=x.createRadialGradient(W/2,H*.46,Math.min(W,H)*.12,W/2,H*.5,Math.max(W,H)*.78);
+  g.addColorStop(0,"rgba(0,0,0,0)"); g.addColorStop(1,"rgba(0,0,0,"+s+")");
+  x.fillStyle=g; x.fillRect(0,0,W,H);
+}
+function scan(x,W,H,a=.14,step=3){
+  x.fillStyle="rgba(0,0,0,"+a+")";
+  for(let y=0;y<H;y+=step) x.fillRect(0,y,W,1);
+}
+function dust(x,W,H,n=30,seed=11){
+  const r=seeded(seed);
+  for(let i=0;i<n;i++){
+    const w=r()*2+.4, h=r()*(H*.1)+1;
+    x.fillStyle="rgba(255,255,255,"+(r()*.16+.04)+")";
+    x.fillRect(r()*W, r()*H, w, h);
+  }
+  for(let i=0;i<n/3;i++){
+    x.strokeStyle="rgba(0,0,0,"+(r()*.3+.1)+")"; x.lineWidth=r()*1.2+.3;
+    x.beginPath(); const sx=r()*W, sy=r()*H;
+    x.moveTo(sx,sy); x.lineTo(sx+(r()-.5)*W*.3, sy+(r()-.5)*H*.2); x.stroke();
+  }
+}
+function halftone(x,cx,cy,rx,ry,dark,seed=3,step=5){
+  const r=seeded(seed);
+  for(let i=-rx;i<rx;i+=step) for(let j=-ry;j<ry;j+=step){
+    const d=(i*i)/(rx*rx)+(j*j)/(ry*ry); if(d>1) continue;
+    const v=(1-d)*dark*(.72+r()*.5);
+    if(v<=.04) continue;
+    x.fillStyle="rgba(0,0,0,"+Math.min(1,v)+")";
+    x.beginPath(); x.arc(cx+i,cy+j,Math.min(step*.52,step*.52*Math.min(1,v+.3)),0,6.283); x.fill();
+  }
+}
+function stampTxt(x,txt,cx,cy,ang,size,col="#D81E12"){
+  x.save(); x.translate(cx,cy); x.rotate(ang);
+  x.font="600 "+size+"px 'IBM Plex Mono', monospace";
+  const w=x.measureText(txt).width;
+  x.strokeStyle=col; x.lineWidth=Math.max(1.6,size*.14); x.globalAlpha=.86;
+  x.strokeRect(-w/2-size*.5,-size*.95,w+size,size*1.9);
+  x.fillStyle=col; x.textAlign="center"; x.textBaseline="middle";
+  x.fillText(txt,0,size*.06); x.restore(); x.globalAlpha=1;
+}
+function label(x,txt,px,py,size=9,col="rgba(255,255,255,.72)"){
+  x.font=size+"px 'IBM Plex Mono', monospace"; x.textAlign="left"; x.textBaseline="alphabetic";
+  x.fillStyle=col; x.fillText(txt,px,py);
+}
+
+const PLATES={
+  /* depósito central: perspectiva de un punto, estantería de cajas */
+  deposito(x,W,H){
+    const vx=W*.5, vy=H*.52;
+    x.fillStyle="#000"; x.fillRect(0,0,W,H);
+    // suelo
+    const fg=x.createLinearGradient(0,vy,0,H);
+    fg.addColorStop(0,"#1C1A19"); fg.addColorStop(1,"#070606");
+    x.fillStyle=fg; x.fillRect(0,vy,W,H-vy);
+    // techo
+    const cg=x.createLinearGradient(0,0,0,vy);
+    cg.addColorStop(0,"#0C0B0B"); cg.addColorStop(1,"#181615");
+    x.fillStyle=cg; x.fillRect(0,0,W,vy);
+    // paneles de luz en fuga
+    for(let i=1;i<=7;i++){
+      const t=i/8, w=W*.30*(1-t)+6, h=Math.max(1.4,H*.035*(1-t));
+      const yy=vy-(vy*.86)*(1-t);
+      x.fillStyle="rgba(255,255,255,"+(.95-t*.55)+")";
+      x.fillRect(vx-w/2, yy, w, h);
+      const g=x.createRadialGradient(vx,yy+h/2,1,vx,yy+h/2,w*1.5);
+      g.addColorStop(0,"rgba(255,255,255,"+(.2-t*.14)+")"); g.addColorStop(1,"rgba(255,255,255,0)");
+      x.fillStyle=g; x.fillRect(vx-w*1.6,yy-h*4,w*3.2,h*9);
+    }
+    // estanterías laterales: filas de cajas en fuga
+    [-1,1].forEach(side=>{
+      for(let i=0;i<9;i++){
+        const t=i/9, t2=(i+1)/9;
+        const xa=vx+side*(W*.055+ (W*.52)*Math.pow(1-t,1.5));
+        const xb=vx+side*(W*.055+ (W*.52)*Math.pow(1-t2,1.5));
+        const ha=H*.40*Math.pow(1-t,1.1), hb=H*.40*Math.pow(1-t2,1.1);
+        const shade=.07+(1-t)*.16;
+        x.fillStyle="rgba(255,255,255,"+shade+")";
+        x.beginPath(); x.moveTo(xa,vy-ha); x.lineTo(xb,vy-hb); x.lineTo(xb,vy+hb*.5); x.lineTo(xa,vy+ha*.5); x.closePath(); x.fill();
+        // separadores de gaveta
+        x.strokeStyle="rgba(0,0,0,.6)"; x.lineWidth=1;
+        for(let k=1;k<5;k++){
+          const ya=vy-ha+(ha*1.5)*k/5, yb=vy-hb+(hb*1.5)*k/5;
+          x.beginPath(); x.moveTo(xa,ya); x.lineTo(xb,yb); x.stroke();
+        }
+        x.strokeStyle="rgba(0,0,0,.85)"; x.beginPath(); x.moveTo(xb,vy-hb); x.lineTo(xb,vy+hb*.5); x.stroke();
+        // etiquetas blancas
+        if(i<6){
+          x.fillStyle="rgba(255,255,255,"+(.5-t*.4)+")";
+          for(let k=0;k<4;k++){
+            const ya=vy-ha+(ha*1.5)*(k+.35)/5;
+            const wl=Math.abs(xb-xa)*.42;
+            x.fillRect(Math.min(xa,xb)+(side<0?Math.abs(xb-xa)*.3:Math.abs(xb-xa)*.28), ya, wl, Math.max(1,ha*.035));
+          }
+        }
+      }
+    });
+    // puerta roja al fondo
+    x.fillStyle="#D81E12"; x.globalAlpha=.9;
+    x.fillRect(vx-W*.016, vy-H*.055, W*.032, H*.012); x.globalAlpha=1;
+    scan(x,W,H,.1,3); vign(x,W,H,.8); grain(x,W,H,30,21);
+    label(x,"ARCH-01 · DEPÓSITO CENTRAL · SUBNIVEL 3", W*.03, H*.085, Math.max(7,W*.0105));
+  },
+
+  /* archivadores metálicos de frente, una gaveta abierta */
+  gabinete(x,W,H){
+    x.fillStyle="#0A0909"; x.fillRect(0,0,W,H);
+    const cols=4, rows=4, m=W*.045, gw=(W-m*2)/cols, gh=(H-m*2)/rows;
+    for(let c=0;c<cols;c++) for(let r=0;r<rows;r++){
+      const px=m+c*gw, py=m+r*gh, open=(c===2&&r===1);
+      const g=x.createLinearGradient(px,py,px,py+gh);
+      g.addColorStop(0,open?"#2E2B2A":"#262423"); g.addColorStop(.5,open?"#3B3836":"#322F2E"); g.addColorStop(1,"#1A1817");
+      x.fillStyle=g; x.fillRect(px+2,py+2,gw-4,gh-4);
+      x.strokeStyle="rgba(0,0,0,.9)"; x.lineWidth=1.5; x.strokeRect(px+2,py+2,gw-4,gh-4);
+      x.strokeStyle="rgba(255,255,255,.07)"; x.lineWidth=1; x.strokeRect(px+3,py+3,gw-6,gh-6);
+      // tirador
+      x.fillStyle="#4A4745"; x.fillRect(px+gw*.36,py+gh*.62,gw*.28,gh*.07);
+      // portaetiqueta
+      x.fillStyle=open?"#F2F0EA":"#D8D5CE"; x.fillRect(px+gw*.3,py+gh*.2,gw*.4,gh*.17);
+      x.fillStyle="rgba(0,0,0,.6)"; x.font=Math.max(6,gh*.072)+"px 'IBM Plex Mono', monospace"; x.textAlign="center";
+      x.fillText(["0100-0399","0400-0699","0700-0999","1000-1299"][r], px+gw*.5, py+gh*.315);
+      x.textAlign="left";
+      if(open){
+        // gaveta entreabierta: hueco negro + sello rojo
+        x.fillStyle="#000"; x.fillRect(px+gw*.08,py+gh*.44,gw*.84,gh*.1);
+        x.fillStyle="#D81E12"; x.fillRect(px+gw*.3,py+gh*.2,gw*.4,gh*.03);
+      }
+    }
+    scan(x,W,H,.1,3); vign(x,W,H,.72); grain(x,W,H,26,33); dust(x,W,H,18,5);
+    label(x,"ARCH-02 · UNIDAD DE ARCHIVADORES · GAVETA 0400-0699 SIN SELLAR", W*.045, H*.032, Math.max(7,W*.0115));
+  },
+
+  /* polaroid 1 · la esquina de noche */
+  esquina(x,W,H){
+    x.fillStyle="#070707"; x.fillRect(0,0,W,H);
+    const hz=H*.58;
+    // edificios
+    x.fillStyle="#141312"; x.fillRect(0,H*.16,W*.42,hz-H*.16);
+    x.fillStyle="#0F0E0E"; x.fillRect(W*.56,H*.1,W*.44,hz-H*.1);
+    const r=seeded(91);
+    for(let i=0;i<26;i++){
+      const lit=r()>.76;
+      x.fillStyle=lit?"rgba(255,255,255,.5)":"rgba(255,255,255,.055)";
+      const bx=r()>.5? r()*W*.36 : W*.58+r()*W*.38;
+      x.fillRect(bx, H*.2+r()*(hz-H*.26), W*.028, H*.034);
+    }
+    // calle
+    const fg=x.createLinearGradient(0,hz,0,H);
+    fg.addColorStop(0,"#1A1918"); fg.addColorStop(1,"#070606");
+    x.fillStyle=fg; x.fillRect(0,hz,W,H-hz);
+    // farola + cono de luz
+    const lx=W*.72, ly=H*.2;
+    x.strokeStyle="#201F1E"; x.lineWidth=Math.max(2,W*.012);
+    x.beginPath(); x.moveTo(lx,ly); x.lineTo(lx,hz+H*.05); x.stroke();
+    x.beginPath(); x.moveTo(lx,ly); x.lineTo(lx-W*.09,ly); x.stroke();
+    const cone=x.createRadialGradient(lx-W*.09,ly,2,lx-W*.09,ly,H*.62);
+    cone.addColorStop(0,"rgba(255,255,255,.85)"); cone.addColorStop(.18,"rgba(255,255,255,.16)"); cone.addColorStop(1,"rgba(255,255,255,0)");
+    x.fillStyle=cone; x.fillRect(0,0,W,H);
+    // charco reflejando
+    x.fillStyle="rgba(255,255,255,.09)";
+    for(let i=0;i<7;i++) x.fillRect(lx-W*.14+i*W*.012, hz+H*.14+i*H*.03, W*.07-i*W*.006, Math.max(1,H*.006));
+    // silueta inclinada
+    x.fillStyle="#000";
+    x.beginPath(); x.ellipse(W*.4,hz+H*.09,W*.085,H*.022,0,0,6.283); x.fill();
+    x.beginPath(); x.ellipse(W*.47,hz+H*.055,W*.03,H*.028,-.5,0,6.283); x.fill();
+    // lluvia
+    x.strokeStyle="rgba(255,255,255,.16)"; x.lineWidth=.8;
+    const rr=seeded(55);
+    for(let i=0;i<110;i++){ const sx=rr()*W, sy=rr()*H;
+      x.beginPath(); x.moveTo(sx,sy); x.lineTo(sx-W*.008,sy+H*.03); x.stroke(); }
+    scan(x,W,H,.08,3); vign(x,W,H,.85); grain(x,W,H,36,77); dust(x,W,H,22,9);
+  },
+
+  /* polaroid 2 · el zapato en el asfalto */
+  zapato(x,W,H){
+    x.fillStyle="#131211"; x.fillRect(0,0,W,H);
+    // textura de asfalto
+    const r=seeded(203);
+    for(let i=0;i<2600;i++){
+      const v=r(); x.fillStyle="rgba("+(v>.5?255:0)+","+(v>.5?255:0)+","+(v>.5?255:0)+","+(r()*.07)+")";
+      x.fillRect(r()*W, r()*H, r()*3+.6, r()*3+.6);
+    }
+    // mancha húmeda
+    const p=x.createRadialGradient(W*.38,H*.66,2,W*.38,H*.66,W*.33);
+    p.addColorStop(0,"rgba(0,0,0,.72)"); p.addColorStop(1,"rgba(0,0,0,0)");
+    x.fillStyle=p; x.fillRect(0,0,W,H);
+    x.fillStyle="rgba(255,255,255,.1)";
+    x.beginPath(); x.ellipse(W*.33,H*.7,W*.1,H*.014,-.2,0,6.283); x.fill();
+    // el zapato
+    x.fillStyle="#000";
+    x.beginPath(); x.ellipse(W*.6,H*.47,W*.115,H*.055,-.22,0,6.283); x.fill();
+    x.fillStyle="#1E1D1C";
+    x.beginPath(); x.ellipse(W*.56,H*.44,W*.07,H*.04,-.22,0,6.283); x.fill();
+    x.fillStyle="rgba(255,255,255,.14)";
+    x.beginPath(); x.ellipse(W*.665,H*.5,W*.03,H*.009,-.2,0,6.283); x.fill();
+    // círculo de anotación a mano
+    x.strokeStyle="#D81E12"; x.lineWidth=Math.max(1.8,W*.009); x.globalAlpha=.9;
+    x.beginPath();
+    for(let a=0;a<6.6;a+=.14){
+      const rad=W*.185+Math.sin(a*3)*W*.008;
+      const px=W*.6+Math.cos(a)*rad, py=H*.47+Math.sin(a)*rad*.62;
+      a===0?x.moveTo(px,py):x.lineTo(px,py);
+    }
+    x.stroke(); x.globalAlpha=1;
+    scan(x,W,H,.07,3); vign(x,W,H,.8); grain(x,W,H,34,41); dust(x,W,H,16,13);
+  },
+
+  /* polaroid 3 · la fachada del edificio */
+  fachada(x,W,H){
+    x.fillStyle="#0A0A09"; x.fillRect(0,0,W,H);
+    x.fillStyle="#171615"; x.fillRect(W*.08,H*.06,W*.84,H*.88);
+    const r=seeded(311), cols=5, rows=6;
+    for(let c=0;c<cols;c++) for(let i=0;i<rows;i++){
+      const px=W*.14+c*(W*.148), py=H*.13+i*(H*.13);
+      const lit=(c===3&&i===2);
+      x.fillStyle=lit?"rgba(255,255,255,.62)":"rgba(255,255,255,"+(.03+r()*.05)+")";
+      x.fillRect(px,py,W*.1,H*.085);
+      if(lit){
+        const g=x.createRadialGradient(px+W*.05,py+H*.04,1,px+W*.05,py+H*.04,W*.2);
+        g.addColorStop(0,"rgba(255,255,255,.3)"); g.addColorStop(1,"rgba(255,255,255,0)");
+        x.fillStyle=g; x.fillRect(px-W*.2,py-H*.2,W*.4,H*.4);
+        x.fillStyle="#000"; x.fillRect(px+W*.055,py+H*.012,W*.028,H*.07);
+      }
+      x.strokeStyle="rgba(0,0,0,.7)"; x.lineWidth=1; x.strokeRect(px,py,W*.1,H*.085);
+    }
+    x.fillStyle="#000"; x.fillRect(W*.08,H*.86,W*.84,H*.14);
+    scan(x,W,H,.08,3); vign(x,W,H,.84); grain(x,W,H,34,67); dust(x,W,H,20,17);
+  },
+
+  /* cámara de vigilancia · fotograma con hueco */
+  camara(x,W,H){
+    x.fillStyle="#0B0B0A"; x.fillRect(0,0,W,H);
+    const hz=H*.62;
+    x.fillStyle="#131211"; x.fillRect(0,hz,W,H-hz);
+    x.strokeStyle="rgba(255,255,255,.12)"; x.lineWidth=1;
+    for(let i=0;i<6;i++){ x.beginPath(); x.moveTo(W*.1+i*W*.16,hz); x.lineTo(W*.02+i*W*.2,H); x.stroke(); }
+    const cone=x.createRadialGradient(W*.22,hz*.5,2,W*.22,hz*.5,W*.4);
+    cone.addColorStop(0,"rgba(255,255,255,.3)"); cone.addColorStop(1,"rgba(255,255,255,0)");
+    x.fillStyle=cone; x.fillRect(0,0,W,H);
+    x.fillStyle="#000";
+    x.beginPath(); x.arc(W*.52,hz*.72,W*.035,0,6.283); x.fill();
+    x.fillRect(W*.485,hz*.8,W*.07,H*.2);
+    // pixelado del área crítica
+    const bs=Math.max(6,W*.028);
+    const im=x.getImageData(0,0,x.canvas.width,x.canvas.height);
+    x.putImageData(im,0,0);
+    const rr=seeded(149);
+    for(let px=W*.42;px<W*.66;px+=bs) for(let py=hz*.52;py<H*.92;py+=bs){
+      const v=rr()*.5+.1; x.fillStyle="rgba("+(v*255|0)+","+(v*255|0)+","+(v*255|0)+",.85)";
+      x.fillRect(px,py,bs,bs);
+    }
+    scan(x,W,H,.2,2); vign(x,W,H,.6); grain(x,W,H,20,97);
+    // interfaz de cámara
+    label(x,"CAM 04 · SECTOR 7 · EXTERIOR",W*.035,H*.085,Math.max(7,W*.013));
+    x.textAlign="right";
+    x.fillStyle="rgba(255,255,255,.75)"; x.font=Math.max(7,W*.013)+"px 'IBM Plex Mono', monospace";
+    x.fillText("02:57:58",W*.965,H*.085); x.textAlign="left";
+    x.fillStyle="#D81E12"; x.fillRect(W*.035,H*.86,W*.35,H*.065);
+    x.fillStyle="#fff"; x.font="600 "+Math.max(7,W*.013)+"px 'IBM Plex Mono', monospace";
+    x.fillText("SIN SEÑAL  02:58 → 03:21",W*.055,H*.903);
+  },
+
+  /* ficha de identificación anulada */
+  retrato(x,W,H){
+    x.fillStyle="#D8D5CE"; x.fillRect(0,0,W,H);
+    x.fillStyle="#C4C1B9"; x.fillRect(W*.06,H*.05,W*.88,H*.9);
+    // fondo de estudio
+    const g=x.createRadialGradient(W*.5,H*.3,W*.08,W*.5,H*.36,W*.6);
+    g.addColorStop(0,"#B9B6AE"); g.addColorStop(1,"#8E8B84");
+    x.fillStyle=g; x.fillRect(W*.14,H*.1,W*.72,H*.56);
+    // retrato en semitono: hombros + cabeza
+    halftone(x,W*.5,H*.62,W*.3,H*.16,1.0,23,Math.max(3.4,W*.016));
+    halftone(x,W*.5,H*.34,W*.17,H*.145,1.0,47,Math.max(3.4,W*.016));
+    // sombra bajo la mandíbula
+    x.fillStyle="rgba(0,0,0,.2)";
+    x.beginPath(); x.ellipse(W*.5,H*.49,W*.13,H*.025,0,0,6.283); x.fill();
+    // datos de la ficha
+    x.fillStyle="#1A1917"; x.font=Math.max(7,W*.027)+"px 'IBM Plex Mono', monospace";
+    x.fillText("BLANCO, TIMOTEO",W*.1,H*.74);
+    x.fillStyle="rgba(26,25,23,.65)"; x.font=Math.max(6,W*.021)+"px 'IBM Plex Mono', monospace";
+    x.fillText("ARCHIVISTA 3.ª CLASE · TB-3-0417",W*.1,H*.785);
+    x.fillText("DIV. REGULARIZACIÓN DE ANOMALÍAS",W*.1,H*.818);
+    // código de barras
+    const r=seeded(401);
+    for(let i=0;i<46;i++){ x.fillStyle="#1A1917";
+      const bw=r()*W*.009+W*.003; x.fillRect(W*.1+i*W*.0175, H*.85, bw, H*.055); }
+    stampTxt(x,"ANULADA",W*.52,H*.42,-.16,Math.max(11,W*.062));
+    grain(x,W,H,22,55); dust(x,W,H,14,29);
+    x.strokeStyle="rgba(0,0,0,.5)"; x.lineWidth=1; x.strokeRect(W*.06,H*.05,W*.88,H*.9);
+  },
+
+  /* carpetas apiladas vistas desde arriba */
+  carpetas(x,W,H){
+    x.fillStyle="#0B0A0A"; x.fillRect(0,0,W,H);
+    const r=seeded(601);
+    for(let i=5;i>=0;i--){
+      const off=i*H*.022, ang=(r()-.5)*.045;
+      x.save(); x.translate(W*.5, H*.52+off); x.rotate(ang);
+      const g=x.createLinearGradient(0,-H*.3,0,H*.3);
+      g.addColorStop(0, i===0?"#EFEDE6":"#CFCCC3"); g.addColorStop(1, i===0?"#CBC8BF":"#A8A59D");
+      x.fillStyle=g; x.fillRect(-W*.34,-H*.27,W*.68,H*.54);
+      x.strokeStyle="rgba(0,0,0,.55)"; x.lineWidth=1; x.strokeRect(-W*.34,-H*.27,W*.68,H*.54);
+      // pestaña
+      x.fillStyle=i===0?"#E4E1D8":"#BDBAB1"; x.fillRect(W*.1,-H*.31,W*.2,H*.045);
+      if(i===0){
+        x.fillStyle="#17160F"; x.font="600 "+Math.max(8,W*.023)+"px 'IBM Plex Mono', monospace"; x.textAlign="left";
+        x.fillText("VERSIÓN OFICIAL",-W*.3,-H*.14);
+        x.fillStyle="rgba(23,22,15,.6)"; x.font=Math.max(7,W*.017)+"px 'IBM Plex Mono', monospace";
+        x.fillText("EXP. 0417 · 0233 · 0508",-W*.3,-H*.08);
+        x.fillText("MARCADOS PARA DEPURACIÓN",-W*.3,-H*.03);
+        for(let k=0;k<4;k++){ x.fillStyle="#000"; x.fillRect(-W*.3,H*.02+k*H*.05, (W*.1+r()*W*.18), H*.022); }
+      }
+      x.restore();
+    }
+    stampTxt(x,"CONFIDENCIAL",W*.66,H*.74,-.1,Math.max(9,W*.03));
+    vign(x,W,H,.72); grain(x,W,H,26,71); dust(x,W,H,16,37);
+  }
+};
+
+/* montaje: resolución de pantalla + redibujado al cambiar el tamaño de la ventana */
+const mounted=new Set();
+function mount(canvas){
+  const name=canvas.dataset.plate, fn=PLATES[name];
+  if(!fn) return;
+  let lastW=0;
+  const draw=()=>{
+    const rect=canvas.getBoundingClientRect();
+    const W=Math.round(rect.width), H=Math.round(rect.height);
+    if(W<40||H<30) return;
+    const dpr=Math.min(2, window.devicePixelRatio||1);
+    canvas.width=Math.round(W*dpr); canvas.height=Math.round(H*dpr);
+    const x=canvas.getContext("2d");
+    x.setTransform(dpr,0,0,dpr,0,0);
+    x.textBaseline="alphabetic"; x.textAlign="left";
+    fn(x,W,H);
+    lastW=W;
+  };
+  draw();
+  const ro=new ResizeObserver(entries=>{
+    const w=Math.round(entries[0].contentRect.width);
+    if(Math.abs(w-lastW)<6) return;
+    clearTimeout(canvas._t); canvas._t=setTimeout(draw,70);
+  });
+  ro.observe(canvas);
+  mounted.add(canvas);
+}
+function mountAll(root=document){ $$("canvas[data-plate]",root).forEach(c=>{ if(!mounted.has(c)) mount(c); }); }
+mountAll();
+
+
+/* ======================================================================
+   ENTRADA EN ESCENA · zoom al acercarse a cada recuadro
+   ====================================================================== */
+function frameCanvas(c){
+  if(c.parentElement&&c.parentElement.classList.contains("frame")) return c.parentElement;
+  const f=document.createElement("div"); f.className="frame";
+  c.parentNode.insertBefore(f,c); f.appendChild(c);
+  return f;
+}
+const REVEAL_SEL=".cred>div,.intro .quote,.intro .lead,.intro .meta,.steps,.panel,figure,.note,.doc,.press,.audio,.nodes,.index,details.ficha,.chips,.meter";
+let io=null;
+if(!RM && "IntersectionObserver" in window){
+  io=new IntersectionObserver((entries,obs)=>{
+    entries.forEach(e=>{
+      if(!e.isIntersecting) return;
+      const el=e.target;
+      const sibs=[...(el.parentElement?el.parentElement.children:[])].filter(n=>n.classList.contains("rv"));
+      const i=Math.max(0,sibs.indexOf(el));
+      setTimeout(()=>{
+        el.classList.add("in");
+        const f=el.querySelector(".frame");
+        if(f){ f.classList.add("zoomed"); }
+      }, Math.min(i*90,360));
+      obs.unobserve(el);
+    });
+  },{threshold:.14, rootMargin:"0px 0px -6% 0px"});
+}
+function observeReveals(root=document){
+  $$("canvas[data-plate],#vidplate,#qr",root).forEach(frameCanvas);
+  if(!io) return;
+  $$(REVEAL_SEL,root).forEach(el=>{
+    if(el.dataset.rv) return;
+    el.dataset.rv="1";
+    const r=el.getBoundingClientRect();
+    if(r.top < innerHeight*.9 && r.bottom > 0 && r.width > 0){ el.classList.add("rv","in"); return; }
+    el.classList.add("rv"); io.observe(el);
+  });
+}
+observeReveals();
+
+/* ======================================================================
+   TELETIPO · RELOJ · ARRANQUE
+   ====================================================================== */
+const TK=["comunicado 417 · no hubo incidente en el sector 7",
+ "la estabilidad social es responsabilidad de todos",
+ "reporte las discrepancias de percepción a su unidad de contención",
+ "depuración de expedientes en curso · subnivel 3",
+ "las filtraciones atribuidas a este organismo son apócrifas",
+ "un recuerdo no es una prueba"];
+const tkhtml=TK.map(t=>"<i>"+t+"</i>").join("");
+$("#tk1").innerHTML=tkhtml; $("#tk2").innerHTML=tkhtml;
+
+const clk=$("#clk");
+setInterval(()=>{const d=new Date();clk.textContent=[d.getHours(),d.getMinutes(),d.getSeconds()]
+  .map(n=>String(n).padStart(2,"0")).join(":");},1000);
+
+const BOOT=[
+"EL SISTEMA · TERMINAL DE ARCHIVO v3.4.1",
+"verificando integridad del registro consolidado .......... ESTABLE",
+"montando volumen /archivo/publico ........................ OK",
+"montando volumen /archivo/subnivel3 ...................... NO LISTADO",
+"depuración programada de expedientes ..................... EN CURSO",
+"anomalía 09: metadato de autor no depurado en /adj ....... IGNORADA",
+"",
+"se requiere autenticación de funcionario para continuar."];
+const bootEl=$("#bootlog"), boot=$("#boot");
+function endBoot(){ boot.hidden=true; openGate(); }
+$("#bootskip").addEventListener("click",endBoot);
+if(RM){ bootEl.textContent=BOOT.join("\n"); setTimeout(endBoot,600); }
+else{
+  let li=0,ci=0;
+  (function type(){
+    if(li>=BOOT.length){ setTimeout(endBoot,520); return; }
+    const line=BOOT[li];
+    bootEl.textContent=BOOT.slice(0,li).join("\n")+(li?"\n":"")+line.slice(0,ci);
+    if(ci<line.length){ ci+= line.length>40?3:1; setTimeout(type,10); }
+    else { li++; ci=0; setTimeout(type,line===""?90:190); }
+  })();
+}
+
+/* ======================================================================
+   AUDIO SINTETIZADO
+   ====================================================================== */
+let AC=null, amb=null;
+function ctx(){ return AC||(AC=new (window.AudioContext||window.webkitAudioContext)()); }
+function noiseBuf(a,sec=2){
+  const b=a.createBuffer(1,a.sampleRate*sec,a.sampleRate), d=b.getChannelData(0);
+  for(let i=0;i<d.length;i++) d[i]=Math.random()*2-1;
+  return b;
+}
+function ambience(on){
+  const a=ctx();
+  if(!on){ if(amb){ amb.g.gain.setTargetAtTime(0,a.currentTime,.4); setTimeout(()=>{amb.stop();amb=null;},900);} return; }
+  const g=a.createGain(); g.gain.value=0; g.connect(a.destination);
+  const os=[50,100,150].map((f,i)=>{const o=a.createOscillator();o.frequency.value=f;
+    const og=a.createGain();og.gain.value=[.09,.045,.016][i];o.connect(og);og.connect(g);o.start();return o;});
+  const fl=a.createOscillator(); fl.frequency.value=120;
+  const flg=a.createGain(); flg.gain.value=.022; fl.connect(flg); flg.connect(g); fl.start();
+  const n=a.createBufferSource(); n.buffer=noiseBuf(a,3); n.loop=true;
+  const bp=a.createBiquadFilter(); bp.type="bandpass"; bp.frequency.value=620; bp.Q.value=.6;
+  const ng=a.createGain(); ng.gain.value=.055; n.connect(bp); bp.connect(ng); ng.connect(g); n.start();
+  g.gain.setTargetAtTime(.5,a.currentTime,1.2);
+  amb={g,stop(){os.forEach(o=>o.stop());fl.stop();n.stop();}};
+}
+const sndBtn=$("#snd");
+sndBtn.addEventListener("click",()=>{
+  const on=sndBtn.getAttribute("aria-pressed")!=="true";
+  sndBtn.setAttribute("aria-pressed",String(on));
+  sndBtn.textContent=on?"audio activo":"audio";
+  ctx().resume(); ambience(on);
+});
+function thud(freq=92,dur=.5,gain=.5){
+  const a=ctx(),o=a.createOscillator(),g=a.createGain();
+  o.frequency.setValueAtTime(freq,a.currentTime);
+  o.frequency.exponentialRampToValueAtTime(freq*.45,a.currentTime+dur);
+  g.gain.setValueAtTime(gain,a.currentTime);
+  g.gain.exponentialRampToValueAtTime(.0005,a.currentTime+dur);
+  o.connect(g);g.connect(a.destination);o.start();o.stop(a.currentTime+dur);
+}
+function burst(dur=.25,gain=.3,lo=700,hi=5200){
+  const a=ctx(),s=a.createBufferSource(); s.buffer=noiseBuf(a,1);
+  const hp=a.createBiquadFilter(); hp.type="highpass"; hp.frequency.value=lo;
+  const lp=a.createBiquadFilter(); lp.type="lowpass"; lp.frequency.value=hi;
+  const g=a.createGain(); g.gain.setValueAtTime(gain,a.currentTime);
+  g.gain.exponentialRampToValueAtTime(.0005,a.currentTime+dur);
+  s.connect(hp);hp.connect(lp);lp.connect(g);g.connect(a.destination);
+  s.start(); s.stop(a.currentTime+dur);
+}
+const sfx={
+  stamp(){ if(AC){thud(92,.45,.45); burst(.05,.18,1200,6000);} },
+  deny(){  if(AC){thud(70,.7,.4);} },
+  grant(){ if(AC){burst(.6,.2,400,3000); thud(55,1.1,.45);} },
+  click(){ if(AC){burst(.03,.12,2000,8000);} }
+};
+
+/* ======================================================================
+   FACHADA
+   ====================================================================== */
+let qn=0;
+const QRES=[
+ 'SIN COINCIDENCIAS EN EL REGISTRO.\nEl hecho consultado no consta. <span class="no">Su consulta ha sido registrada.</span>',
+ 'SIN COINCIDENCIAS EN EL REGISTRO.\nSe recomienda revisar la exactitud de su recuerdo antes de insistir.',
+ 'SIN COINCIDENCIAS EN EL REGISTRO.\n<span class="no">Consulta reiterada.</span> Se ha abierto la ficha de observación 0417-C a nombre de esta terminal.',
+ 'SIN COINCIDENCIAS EN EL REGISTRO.\nEl registro es completo. La discrepancia está en el consultante.'
+];
+$("#qbtn").addEventListener("click",()=>{
+  qn++; $("#qn").textContent=qn;
+  $("#qout").innerHTML=QRES[Math.min(qn-1,QRES.length-1)];
+  sfx.stamp();
+});
+
+function setState(s){
+  app.dataset.state=s;
+  if(!RM){ app.classList.remove("resync"); void app.offsetWidth; app.classList.add("resync"); }
+}
+
+function unlockOculto(fid){
+  const first = $("#oculto").hidden;
+  if(first){
+    $("#oculto").hidden=false; setState("oculto"); sfx.grant();
+    mountAll(); observeReveals($("#oculto"));
+  }
+  $("#acc").textContent="acceso 03 · "+((fid||"sin id").toLowerCase())+" · sesión no registrada";
+  setTimeout(()=>$("#oculto").scrollIntoView({behavior:RM?"auto":"smooth",block:"start"}),first?420:60);
+}
+function unlockNucleo(){
+  if($("#nucleo").hidden){
+    $("#nucleo").hidden=false; setState("nucleo"); sfx.grant();
+    mountAll(); observeReveals($("#nucleo")); startVid();
+  }
+  $("#acc").textContent="acceso 09 · identidad en disputa · sesión no registrada";
+}
+
+/* credencial de entrada inmediata */
+function doLogin(){
+  const u=$("#u1").value.trim(), v=$("#p1").value.trim().toUpperCase(), out=$("#loginout");
+  if(v==="SIMON"){
+    out.innerHTML='<span class="ok">ACCESO CONCEDIDO.</span> Montando /archivo/subnivel3 — la sesión no queda en el libro de accesos.';
+    $("#idf").value=u||"TB-3-0417"; $("#key").value="SIMON";
+    unlockOculto(u);
+  } else {
+    out.innerHTML='<span class="no">CONTRASEÑA INCORRECTA.</span> La clave de unidad figura en la credencial de consulta, a la derecha.';
+    sfx.deny();
+  }
+}
+$("#loginbtn").addEventListener("click",doLogin);
+$("#p1").addEventListener("keydown",e=>{ if(e.key==="Enter") doLogin(); });
+$("#u1").addEventListener("keydown",e=>{ if(e.key==="Enter") doLogin(); });
+$("#allbtn").addEventListener("click",()=>{
+  const u=$("#u1").value.trim();
+  $("#idf").value=u||"TB-3-0417"; $("#key").value="SIMON"; $("#final").value="no estoy seguro";
+  $("#loginout").innerHTML='<span class="ok">ACCESO TOTAL 09.</span> Servidor no listado y bóveda TB/0001 abiertos. Todos los expedientes de este volumen quedan a la vista.';
+  $("#keyout").innerHTML='<span class="ok">CLAVE ACEPTADA.</span> Acceso concedido mediante credencial de supervisión.';
+  $("#finalout").innerHTML='<span class="ok">BÓVEDA ABIERTA.</span> Expediente TB/0001 descifrado mediante credencial de supervisión.';
+  if($("#oculto").hidden){ $("#oculto").hidden=false; mountAll(); observeReveals($("#oculto")); }
+  unlockNucleo(); $("#finalwrap").hidden=false;
+  setTimeout(()=>$("#oculto").scrollIntoView({behavior:RM?"auto":"smooth",block:"start"}),420);
+});
+
+let tries=0;
+$("#keybtn").addEventListener("click",()=>{
+  const v=$("#key").value.trim().toUpperCase(), out=$("#keyout");
+  if(v==="SIMON"){
+    out.innerHTML='<span class="ok">CLAVE ACEPTADA.</span> La clave no corresponde a ninguna unidad activa.\nMontando /archivo/subnivel3 — sesión no registrada.';
+    unlockOculto($("#idf").value.trim());
+  } else if(v===""){
+    out.innerHTML='Campo vacío. La clave figura en el metadato de autor que la depuración no alcanzó a borrar.';
+  } else {
+    tries++;
+    out.innerHTML='<span class="no">CLAVE RECHAZADA.</span> Intento '+tries+' de 3.'+
+      (tries>=2?'\nSugerencia del sistema: el índice de medios adjuntos contiene un campo de autor sin depurar.':'');
+    sfx.deny();
+  }
+});
+$("#key").addEventListener("keydown",e=>{ if(e.key==="Enter") $("#keybtn").click(); });
+
+/* ======================================================================
+   EXPEDIENTES
+   ====================================================================== */
+const EXP={
+e0417:`
+<article class="panel">
+ <header><span>expediente 0417 · josé</span><span class="sep"></span><span class="code">marcado para depuración</span></header>
+ <div class="body">
+  <dl class="data">
+   <dt>Edad</dt><dd>40</dd>
+   <dt>Domicilio</dt><dd>sector 7 · cruce 7.ª con 12</dd>
+   <dt>Hecho declarado</dt><dd>golpe metálico, grito breve, cuerpo en el asfalto, un zapato rodando</dd>
+   <dt>Versión consolidada</dt><dd>interrupción programada del suministro eléctrico</dd>
+   <dt>Pruebas aportadas</dt><dd>croquis a mano con marca «X» · hoja manuscrita</dd>
+   <dt>Pruebas desaparecidas</dt><dd>grabación de cámaras del edificio · recorte original de prensa</dd>
+   <dt>Resolución</dt><dd>reclamo invalidado · sujeto en estado de resignación</dd>
+   <dt>Firma de depuración</dt><dd>T. Blanco · archivista 3.ª clase</dd>
+  </dl>
+ </div>
+</article>
+<div class="stack" style="gap:.6rem">
+ <p class="tag">registro fotográfico del lugar · tomas del propio reclamante</p>
+ <div class="grid g3">
+  <figure class="pol tilt-a"><canvas data-plate="esquina" aria-label="Polaroid: la esquina de noche"></canvas>
+   <div class="cap">la esquina, 03:12</div></figure>
+  <figure class="pol"><canvas data-plate="zapato" aria-label="Polaroid: zapato sobre el asfalto"></canvas>
+   <div class="cap">el zapato <span class="mark">·····</span></div></figure>
+  <figure class="pol tilt-b"><canvas data-plate="fachada" aria-label="Polaroid: fachada del edificio"></canvas>
+   <div class="cap">mi ventana (vi todo)</div></figure>
+ </div>
+</div>
+<div class="grid g2">
+ <figure>
+  <canvas class="plate" data-plate="croquis" aria-label="Croquis a mano del cruce con una X marcando el lugar"></canvas>
+  <figcaption><b>Pieza A</b> · croquis del cruce 7.ª con 12 · trazado con regla · marca «X»</figcaption>
+ </figure>
+ <div class="note">
+  <p class="hand"><span class="strike">Lo vi.</span><br><span class="strike">Creo que lo vi.</span><br>No estoy seguro.</p>
+  <p class="tag solo" style="margin-top:1rem">pieza B · hoja manuscrita · 03:48 · lápiz</p>
+ </div>
+</div>
+<div class="grid g2">
+ <div class="press">
+  <p class="kicker">sector 7 · edición de la mañana</p>
+  <h5>Corte de energía afecta nueve manzanas durante la madrugada</h5>
+  <div class="halftone"></div>
+  <div class="cols"><p>La interrupción, programada por la autoridad de infraestructura, se extendió entre las 03:05 y las 03:40. No se reportaron incidentes de orden público ni atenciones médicas en el perímetro.</p><p>Vecinos consultados describieron ruidos metálicos atribuibles a los trabajos. La autoridad reitera que <span class="bar" style="width:5.5em"></span> no corresponde a los hechos.</p></div>
+  <p class="kicker" style="margin-top:.6rem">pieza C · recorte intervenido · párrafo final tachado en origen</p>
+ </div>
+ <div class="audio">
+  <div class="head"><span>REG_0417_SIMON.wav</span><span class="sep"></span><span class="dim">02:41 · interceptado</span></div>
+  <div class="wave" id="w1" aria-hidden="true"></div>
+  <button class="btn" data-play="w1" type="button">reproducir estática</button>
+  <p class="transcript">«… el golpe fue <span class="gap">[estática 4 s]</span> no era un transformador, yo sé cómo suena un transformador … había un zapato en la mitad de la calle y nadie <span class="gap">[corte]</span> cuando volví ya habían lavado el asfalto …»</p>
+  <p class="tag solo">pieza D · campo de autor sin depurar: <b style="color:var(--red)">SIMON</b></p>
+ </div>
+</div>`,
+e0233:`
+<article class="panel">
+ <header><span>expediente 0233 · claudia r.</span><span class="sep"></span><span class="code">fragmento · depuración parcial</span></header>
+ <div class="body">
+  <dl class="data">
+   <dt>Vínculo</dt><dd>compañera de oficina del sujeto 0417</dd>
+   <dt>Declaración inicial</dt><dd>«preguntó tres veces si yo había oído algo esa noche»</dd>
+   <dt>Declaración consolidada</dt><dd>«no recuerdo haber trabajado con nadie con ese nombre»</dd>
+   <dt>Intervalo entre ambas</dt><dd>11 días</dd>
+   <dt>Estado</dt><dd>no requiere contención · corrección administrativa suficiente</dd>
+  </dl>
+ </div>
+</article>
+<div class="grid g2">
+ <div class="doc">
+  <span class="stamp">versión oficial</span>
+  <h5>Acta de corrección administrativa</h5>
+  <p class="typed">La declarante rectifica de forma voluntaria su testimonio del día <span class="bar" style="width:4em"></span>. Se consigna que el sujeto 0417 <span class="bar" style="width:11em"></span> y que ninguna persona del área reporta conversaciones sobre el hecho señalado.</p>
+  <p class="typed">Se ordena el archivo del vínculo laboral entre ambos registros. Toda copia anterior de esta acta debe <span class="bar" style="width:7em"></span>.</p>
+ </div>
+ <figure>
+  <canvas class="plate" data-plate="carpetas" aria-label="Fotografía: carpetas apiladas marcadas para depuración"></canvas>
+  <figcaption><b>Lám. 03</b> · carpetas retiradas del depósito antes de la purga</figcaption>
+ </figure>
+</div>
+<p class="dim" style="font-size:12.5px">Dos declaraciones de la misma persona, once días aparte, firmadas con la misma mano. El resto del expediente fue purgado antes de la copia.</p>`,
+e0508:`
+<article class="panel">
+ <header><span>expediente 0508 · administrador del edificio</span><span class="sep"></span><span class="code">fragmento</span></header>
+ <div class="body">
+  <dl class="data">
+   <dt>Solicitud recibida</dt><dd>acceso a grabación de cámara exterior · noche del hecho</dd>
+   <dt>Respuesta entregada</dt><dd>«el equipo estuvo en mantenimiento»</dd>
+   <dt>Registro técnico real</dt><dd>equipo operativo · grabación continua</dd>
+   <dt>Material entregado</dt><dd>CAM_0417_PARCIAL.vid</dd>
+   <dt>Duración ausente</dt><dd style="color:var(--red)">23 min · 02:58 → 03:21</dd>
+   <dt>Nota del archivista</dt><dd>el hueco empieza seis minutos antes del hecho declarado</dd>
+  </dl>
+ </div>
+</article>
+<div class="grid g2">
+ <figure>
+  <canvas class="plate pix" data-plate="camara" aria-label="Fotograma de cámara de vigilancia con el área pixelada"></canvas>
+  <figcaption><b>Lám. 04</b> · último fotograma antes del hueco · 02:57:58 · área crítica pixelada en origen</figcaption>
+ </figure>
+ <div class="audio">
+  <div class="head"><span>CAM_0417_PARCIAL.vid</span><span class="sep"></span><span class="dim">pista de audio recuperada</span></div>
+  <div class="wave" id="w2" aria-hidden="true"></div>
+  <button class="btn" data-play="w2" type="button">reproducir estática</button>
+  <p class="transcript">«<span class="gap">[23 min de silencio digital insertado — no es ausencia de señal, es relleno]</span>»</p>
+  <p class="tag solo">el silencio tiene el tamaño exacto de lo que falta</p>
+ </div>
+</div>`,
+diario:`
+<article class="panel">
+ <header><span>diario de campo · t. blanco</span><span class="sep"></span><span class="code">no institucional</span></header>
+ <div class="body">
+  <div class="note">
+   <p class="hand">Archivé 2.140 reclamos. Hoy encontré uno con una nota que no debía existir: «No estoy seguro». Me dolió la cabeza doce horas.</p>
+  </div>
+  <div class="note">
+   <p class="hand">Reviso mi propio expediente. Doce años de servicio y ni un día que yo pueda recordar. Un expediente no es una vida.</p>
+  </div>
+  <div class="note">
+   <p class="hand">Hay una cicatriz detrás de mi oreja izquierda. Plana. Yo no me la hice. Los informes de la unidad tampoco la mencionan, y eso es lo que me asusta.</p>
+  </div>
+  <p class="dim" style="font-size:12.5px">Tres hojas de papel reciclado, sin sello, sin número de folio. Es el único documento de este servidor que nadie ordenó escribir.</p>
+ </div>
+</article>`
+};
+
+/* croquis como lámina montable */
+PLATES.croquis=function(x,W,H){
+  x.fillStyle="#F2F0EA"; x.fillRect(0,0,W,H);
+  x.strokeStyle="rgba(0,0,0,.13)"; x.lineWidth=1;
+  const step=Math.max(10,W*.03);
+  for(let i=0;i<=W;i+=step){x.beginPath();x.moveTo(i,0);x.lineTo(i,H);x.stroke();}
+  for(let j=0;j<=H;j+=step){x.beginPath();x.moveTo(0,j);x.lineTo(W,j);x.stroke();}
+  const r=seeded(417), jit=n=>n+(r()-.5)*W*.004;
+  x.strokeStyle="#15140F"; x.lineWidth=Math.max(1.4,W*.004);
+  [[[.07,.63],[.93,.57]],[[.07,.71],[.93,.65]],[[.56,.06],[.61,.94]],[[.50,.06],[.55,.94]]].forEach(s=>{
+    x.beginPath(); x.moveTo(jit(W*s[0][0]),jit(H*s[0][1])); x.lineTo(jit(W*s[1][0]),jit(H*s[1][1])); x.stroke();
+  });
+  x.strokeStyle="rgba(21,20,15,.5)"; x.lineWidth=1;
+  [[.09,.13,.38,.4],[.66,.12,.26,.41],[.11,.78,.36,.15]].forEach(b=>x.strokeRect(W*b[0],H*b[1],W*b[2],H*b[3]));
+  x.strokeStyle="#D81E12"; x.lineWidth=Math.max(2.6,W*.009);
+  const cx=W*.465, cy=H*.62, s=Math.min(W,H)*.058;
+  x.beginPath(); x.moveTo(cx-s,cy-s); x.lineTo(cx+s,cy+s); x.moveTo(cx+s,cy-s); x.lineTo(cx-s,cy+s); x.stroke();
+  x.fillStyle="#15140F"; x.font="italic "+Math.max(12,W*.038)+"px Caveat, cursive";
+  x.fillText("7.ª",W*.6,H*.2); x.fillText("12",W*.23,H*.55);
+  x.fillText("el zapato quedó acá →",W*.06,H*.88);
+  x.fillStyle="#D81E12"; x.font="600 "+Math.max(12,W*.038)+"px Caveat, cursive";
+  x.fillText("03:12",cx+s*1.6,cy-s*.8);
+  x.fillStyle="rgba(21,20,15,.5)"; x.font=Math.max(7,W*.021)+"px 'IBM Plex Mono', monospace";
+  x.fillText("PIEZA A · 0417",W*.035,H*.08);
+  grain(x,W,H,16,417);
+};
+
+const expbox=$("#expbox");
+function showExp(k){
+  expbox.innerHTML=EXP[k];
+  $$("#idx button").forEach(b=>b.setAttribute("aria-selected",String(b.dataset.exp===k)));
+  mountAll(expbox); initWaves(); observeReveals(expbox); sfx.click();
+}
+$$("#idx button").forEach(b=>b.addEventListener("click",()=>showExp(b.dataset.exp)));
+showExp("e0417");
+
+function initWaves(){
+  $$(".wave").forEach(w=>{
+    if(w.childElementCount) return;
+    for(let i=0;i<64;i++){
+      const b=document.createElement("i");
+      b.style.height=(6+Math.abs(Math.sin(i*1.7))*Math.random()*34).toFixed(1)+"%";
+      w.appendChild(b);
+    }
+  });
+  $$("[data-play]").forEach(btn=>{
+    if(btn.dataset.bound) return; btn.dataset.bound="1";
+    btn.addEventListener("click",()=>{
+      ctx().resume(); burst(2.4,.14,300,4200);
+      const bars=$$("#"+btn.dataset.play+" i"); let i=0;
+      btn.disabled=true; btn.textContent="reproduciendo…";
+      const t=setInterval(()=>{
+        bars.forEach((b,j)=>b.classList.toggle("on",j<=i));
+        if(++i>bars.length){ clearInterval(t); bars.forEach(b=>b.classList.remove("on"));
+          btn.disabled=false; btn.textContent="reproducir estática"; }
+      },2400/bars.length);
+    });
+  });
+}
+
+/* ======================================================================
+   CORRELADOR
+   ====================================================================== */
+const PIEZAS=[
+ {id:"A",t:"Croquis con «X» · 0417"},
+ {id:"B",t:"Hoja manuscrita «No estoy seguro»"},
+ {id:"C",t:"Recorte: corte de energía"},
+ {id:"D",t:"Audio REG_0417_SIMON.wav"},
+ {id:"E",t:"CAM_0417: 23 min ausentes"},
+ {id:"F",t:"Orden de depuración · firma T. Blanco"},
+ {id:"G",t:"Informe quirúrgico · implante occipital"},
+ {id:"H",t:"Credencial anulada · 3.ª clase"}
+];
+const PARES={
+ "AC":"El croquis sitúa el cuerpo en el cruce 7.ª con 12 a las 03:12. El recorte sitúa un corte de energía en el mismo cruce, en el mismo minuto. Dos versiones ocupan el mismo hecho: una sobra.",
+ "DE":"El audio registra 02:41 de conversación dentro de los 23 minutos que la cámara no grabó. El hueco no es una falla: es del tamaño exacto de lo que falta.",
+ "FG":"La orden de depuración del caso 0417 y el informe del implante occipital comparten número de expediente interno. Quien firmó el borrado fue operado por la misma unidad.",
+ "BH":"La hoja de la víctima y la credencial anulada llevan el sello de la misma unidad de contención. El archivista y el reclamante pasaron por la misma puerta."
+};
+const chips=$("#chips"); let sel=[], hits=0, integ=100;
+PIEZAS.forEach(p=>{
+  const b=document.createElement("button");
+  b.className="chip"; b.type="button"; b.setAttribute("aria-pressed","false");
+  b.dataset.id=p.id; b.innerHTML="<b>"+p.id+"</b>"+p.t;
+  b.addEventListener("click",()=>{
+    const on=b.getAttribute("aria-pressed")==="true";
+    if(on){ sel=sel.filter(s=>s!==p.id); b.setAttribute("aria-pressed","false"); }
+    else{
+      if(sel.length>=2){ const drop=sel.shift(); $('.chip[data-id="'+drop+'"]').setAttribute("aria-pressed","false"); }
+      sel.push(p.id); b.setAttribute("aria-pressed","true");
+    }
+    $("#xsel").textContent=sel.length+" pieza"+(sel.length===1?"":"s")+" seleccionada"+(sel.length===1?"":"s");
+    $("#xbtn").disabled=sel.length!==2; sfx.click();
+  });
+  chips.appendChild(b);
+});
+const done=new Set();
+$("#xbtn").addEventListener("click",()=>{
+  const k=[...sel].sort().join(""), log=$("#xlog");
+  if(log.children.length===1 && log.children[0].querySelector("time")?.textContent==="cruce 00") log.innerHTML="";
+  const li=document.createElement("li");
+  const n=String(log.children.length+1).padStart(2,"0");
+  if(PARES[k]&&!done.has(k)){
+    done.add(k); hits++; integ=Math.max(12,integ-22-hits*3);
+    li.className="hit";
+    li.innerHTML="<time>cruce "+n+" · correlación confirmada · "+k+"</time>"+PARES[k];
+    sfx.grant();
+    $("#intg").textContent=integ+" %"; $("#intgfill").style.width=integ+"%";
+    if(hits>=3) $("#finalwrap").hidden=false;
+  } else if(PARES[k]){
+    li.innerHTML="<time>cruce "+n+" · duplicado</time>Esta correlación ya está registrada en la sesión.";
+  } else {
+    li.innerHTML="<time>cruce "+n+" · sin correlación</time>Las piezas "+sel.join(" y ")+" no comparten campo verificable. El intento queda en el libro de accesos de esta terminal.";
+    sfx.deny();
+  }
+  log.prepend(li);
+});
+$("#finalbtn").addEventListener("click",()=>{
+  const v=$("#final").value.trim().toLowerCase().replace(/[.,;!?¿¡]/g,"");
+  if(v==="no estoy seguro"){
+    $("#finalout").innerHTML='<span class="ok">BÓVEDA ABIERTA.</span> Expediente TB/0001 descifrado.';
+    unlockNucleo();
+    setTimeout(()=>$("#nucleo").scrollIntoView({behavior:RM?"auto":"smooth",block:"start"}),420);
+  } else {
+    $("#finalout").innerHTML='<span class="no">FRASE INCORRECTA.</span> La bóveda espera las cuatro palabras con las que el reclamante del caso 0417 retiró su certeza.';
+    sfx.deny();
+  }
+});
+$("#final").addEventListener("keydown",e=>{ if(e.key==="Enter") $("#finalbtn").click(); });
+
+
+/* ======================================================================
+   PORTAL DE ACCESO · centrado sobre la página desenfocada
+   ====================================================================== */
+const gate=$("#gate");
+function openGate(){
+  gate.hidden=false; document.body.classList.add("locked");
+  setTimeout(()=>{ const f=$("#gp"); if(f){ f.focus(); f.select(); } },120);
+}
+function closeGate(){
+  gate.classList.add("out"); document.body.classList.remove("locked");
+  setTimeout(()=>{ gate.hidden=true; },520);
+}
+function grantAll(user){
+  const u=(user||"").trim()||"TB-3-0417";
+  $("#u1").value=u; $("#p1").value="SIMON";
+  $("#idf").value=u; $("#key").value="SIMON"; $("#final").value="no estoy seguro";
+  if($("#oculto").hidden){ $("#oculto").hidden=false; mountAll(); observeReveals($("#oculto")); }
+  $("#finalwrap").hidden=false;
+  unlockNucleo();
+  $("#acc").textContent="acceso 09 · "+u.toLowerCase()+" · volumen completo";
+  $("#loginout").innerHTML='<span class="ok">SESIÓN ACTIVA.</span> Volumen completo disponible: servidor no listado y bóveda TB/0001 abiertos.';
+  $("#keyout").innerHTML='<span class="ok">CLAVE ACEPTADA.</span> Acceso concedido en la autenticación de entrada.';
+  $("#finalout").innerHTML='<span class="ok">BÓVEDA ABIERTA.</span> Expediente TB/0001 descifrado.';
+  sfx.grant();
+  window.scrollTo({top:0,behavior:"auto"});
+}
+$("#gbtn").addEventListener("click",()=>{
+  const u=$("#gu").value.trim(), v=$("#gp").value.trim().toUpperCase();
+  if(!u){ $("#gerr").textContent="Introduzca un ID de funcionario."; return; }
+  if(v!=="SIMON"){
+    $("#gerr").textContent="Contraseña incorrecta. La credencial está impresa debajo del formulario.";
+    sfx.deny(); return;
+  }
+  $("#gerr").textContent="";
+  grantAll(u); closeGate();
+});
+$("#gu").addEventListener("keydown",e=>{ if(e.key==="Enter") $("#gbtn").click(); });
+$("#gp").addEventListener("keydown",e=>{ if(e.key==="Enter") $("#gbtn").click(); });
+$("#gskip").addEventListener("click",closeGate);
+gate.addEventListener("keydown",e=>{ if(e.key==="Escape") closeGate(); });
+
+/* ======================================================================
+   FRAGMENTO DE VÍDEO (animado, adaptable)
+   ====================================================================== */
+let vidT=null;
+function startVid(){
+  const c=$("#vidplate"); if(!c||vidT) return;
+  let f=0;
+  const render=()=>{
+    const rect=c.getBoundingClientRect();
+    const W=Math.max(60,Math.round(rect.width)), H=Math.max(40,Math.round(rect.height));
+    const sc=Math.max(1,Math.round(Math.min(2,window.devicePixelRatio||1)));
+    if(c.width!==Math.round(W*.42)) { c.width=Math.round(W*.42); c.height=Math.round(H*.42); }
+    const x=c.getContext("2d"), w=c.width, h=c.height;
+    f++;
+    x.setTransform(1,0,0,1,0,0);
+    x.fillStyle="#000"; x.fillRect(0,0,w,h);
+    const g=x.createRadialGradient(w/2,h*.24,2,w/2,h*.24,w*.48);
+    g.addColorStop(0,"rgba(255,255,255,.95)"); g.addColorStop(.3,"rgba(255,255,255,.18)");
+    g.addColorStop(1,"rgba(0,0,0,0)");
+    x.fillStyle=g; x.fillRect(0,0,w,h);
+    x.fillStyle="#1A1818"; x.fillRect(w*.1,h*.66,w*.8,h*.1);
+    x.fillStyle="#232120"; x.fillRect(w*.28,h*.59,w*.44,h*.08);
+    x.fillStyle="#000";
+    [0.18,0.8].forEach((px,i)=>{
+      x.beginPath(); x.arc(w*px,h*(.4+i*.02),w*.058,0,6.283); x.fill();
+      x.fillRect(w*px-w*.078,h*.45,w*.156,h*.32);
+    });
+    for(let y=0;y<h;y+=2){ x.fillStyle="rgba(0,0,0,.3)"; x.fillRect(0,y,w,1); }
+    for(let i=0;i<3;i++){
+      if(Math.random()<.5) continue;
+      const y=Math.random()*h, hh=1+Math.random()*4, dx=(Math.random()-.5)*w*.12;
+      const d=x.getImageData(0,y|0,w,Math.max(1,hh|0)); x.putImageData(d,dx,y|0);
+    }
+    const im=x.getImageData(0,0,w,h), d=im.data;
+    for(let i=0;i<d.length;i+=4){ const n=(Math.random()-.5)*46; d[i]+=n; d[i+1]+=n; d[i+2]+=n; }
+    x.putImageData(im,0,0);
+    x.fillStyle="#D81E12"; x.font=Math.max(5,w*.032)+"px 'IBM Plex Mono', monospace";
+    x.fillText("REC · TB/0001 · f"+String(f%9999).padStart(4,"0"),w*.04,h*.1);
+  };
+  render();
+  vidT=setInterval(render,RM?420:250);
+}
+
+/* ======================================================================
+   LIBERACIÓN
+   ====================================================================== */
+$("#rel").addEventListener("click",()=>{
+  const out=$("#relout"), b=$("#rel"); b.disabled=true;
+  const steps=[
+   "Compilando expedientes 0417 · 0233 · 0508 · TB/0001 ……",
+   "Encriptando con clave derivada de la frase manuscrita ……",
+   "Replicando en servidores abiertos ……  3 de 7",
+   "Replicando en servidores abiertos ……  7 de 7",
+   'TRANSFERENCIA COMPLETA.\nLa custodia del archivo ya no es institucional.\nSi esta copia se difunde, no puede depurarse. <span class="ok">Ahora son suyos.</span>'
+  ];
+  let i=0;
+  (function step(){
+    out.innerHTML=steps[i];
+    if(i===steps.length-1){ sfx.grant(); $("#qrwrap").hidden=false; observeReveals($("#qrwrap")); mountQR(); return; }
+    sfx.click(); i++; setTimeout(step,RM?200:850);
+  })();
+});
+function mountQR(){
+  const c=$("#qr");
+  const draw=()=>{
+    const rect=c.getBoundingClientRect();
+    const S=Math.max(80,Math.round(rect.width));
+    const N=29, cell=Math.max(3,Math.floor(S/N));
+    c.width=N*cell; c.height=N*cell;
+    const x=c.getContext("2d");
+    x.fillStyle="#FFF"; x.fillRect(0,0,c.width,c.height);
+    let seed=417; const rnd=()=>((seed=(seed*1103515245+12345)&0x7fffffff)/0x7fffffff);
+    x.fillStyle="#000";
+    for(let i=0;i<N;i++) for(let j=0;j<N;j++) if(rnd()>.52) x.fillRect(i*cell,j*cell,cell,cell);
+    const finder=(i,j)=>{
+      x.fillStyle="#000"; x.fillRect(i*cell,j*cell,7*cell,7*cell);
+      x.fillStyle="#FFF"; x.fillRect((i+1)*cell,(j+1)*cell,5*cell,5*cell);
+      x.fillStyle="#000"; x.fillRect((i+2)*cell,(j+2)*cell,3*cell,3*cell);
+    };
+    finder(0,0); finder(N-7,0); finder(0,N-7);
+    x.fillStyle="#FFF"; x.fillRect((N-8)*cell,(N-8)*cell,8*cell,8*cell);
+    x.fillStyle="#D81E12"; x.font="600 "+Math.max(7,cell*1.6)+"px 'IBM Plex Mono', monospace";
+    x.fillText("0417",(N-7.4)*cell,(N-3.2)*cell);
+  };
+  draw();
+  if(!c._ro){ c._ro=new ResizeObserver(()=>{clearTimeout(c._t);c._t=setTimeout(draw,80);}); c._ro.observe(c); }
+}
+
+/* redibujado global si cambia el zoom o la densidad de pantalla */
+let lastDpr=window.devicePixelRatio;
+window.addEventListener("resize",()=>{
+  if(window.devicePixelRatio!==lastDpr){ lastDpr=window.devicePixelRatio; mountAll(); }
+},{passive:true});
+</script>
+</body>
+</html>
